@@ -1,0 +1,218 @@
+Report of Calibration
+PSC 4CH-MSS-AR-SD-SF_S/N 0007
+2025-09-03 08:59:03
+
+Calibration Current standard: BNL PSC ATE S/N 001
+Calibration Volt standard: HP 3458A-002 S/N 2823A 06900
+Calibration Resistance standard: Fluke 742A-1 S/N 1063008
+End Header
+
+
+lab{1}Chan1
+Burden resistor = 15.3846
+
+Measuring initial gains and offsets
+       Itest       dacSP       dcct1       dcct2       dacRB         err
+   -0.999311    1.003412   -1.030122   -1.029403    0.994482    0.030338
+  -58.003504   58.061751  -57.652931  -57.633057   58.092083    0.084773
+
+                                   dacSP         dcct1         dcct2         dacRB
+Initial measured offsets:      -0.003152     -0.037497     -0.037114      0.000000
+Initial measured gains:         1.000950      0.993310      0.992974      1.000688
+Gain corrections:               1.000950      1.006736      1.007076      1.000000
+
+Writing gain and offset corrections for dacSP, dcct1, and dcct2 to PSC
+
+Measuring DAC readback gain and offset
+DAC SP   DAC RB
+1.000000   0.994945 
+58.000000   58.088902 
+
+Measured offset: -0.006703
+Measured gain: 1.001648
+Gain correction: 0.998354
+
+Writing gain and offset constants for dacRB to PSC
+
+Verification
+       Itest       dacSP       dcct1       dcct2       dacRB         err
+   -0.999338    0.998899   -0.999848   -1.000044    0.999779    0.001615
+  -58.003334   58.003163  -58.003540  -58.003651   58.002026    0.050380
+
+
+                                 dacSP         dcct1         dcct2         dacRB
+Final measured offsets:       0.000443     -0.000515     -0.000713      0.000915
+Final measured gains:         1.000005      0.999995      0.999993      0.999965
+
+
+
+                                 dacSP         dcct1         dcct2         dacRB
+Final measured offsets mean: -0.000172     -0.000515     -0.000769      0.000531
+Final measured offsets stdev: 0.000354      0.000073      0.000086      0.000296
+Final measured gains mean:    0.999991      0.999991      0.999989      0.999980
+Final measured gains stdev:   0.000011      0.000006      0.000005      0.000009
+
+Saving channel 1 calibration constants to qspi
+
+
+
+Page 1 of 4lab{1}Chan2
+Burden resistor = 7.1429
+
+Measuring initial gains and offsets
+       Itest       dacSP       dcct1       dcct2       dacRB         err
+   -0.998859    1.013687   -1.068390   -1.071159    0.971358    0.033904
+ -126.011111  126.095011 -125.198463 -125.204498  126.111122    0.084430
+
+                                   dacSP         dcct1         dcct2         dacRB
+Initial measured offsets:      -0.014276     -0.076580     -0.079323      0.000000
+Initial measured gains:         1.000553      0.992943      0.992969      1.000467
+Gain corrections:               1.000553      1.007107      1.007080      1.000000
+
+Writing gain and offset corrections for dacSP, dcct1, and dcct2 to PSC
+
+Measuring DAC readback gain and offset
+DAC SP   DAC RB
+1.000000   0.972381 
+126.000000   126.100197 
+
+Measured offset: -0.028641
+Measured gain: 1.001023
+Gain correction: 0.998979
+
+Writing gain and offset constants for dacRB to PSC
+
+Verification
+       Itest       dacSP       dcct1       dcct2       dacRB         err
+   -0.998882    0.998260   -0.999935   -0.999640    0.995969    0.004685
+ -126.011670  126.009159 -126.011780 -126.011589  126.008049    0.070203
+
+
+                                 dacSP         dcct1         dcct2         dacRB
+Final measured offsets:       0.000607     -0.001060     -0.000765     -0.002300
+Final measured gains:         0.999985      0.999992      0.999993      1.000009
+
+
+
+                                 dacSP         dcct1         dcct2         dacRB
+Final measured offsets mean:  0.000028     -0.001244     -0.000864     -0.001910
+Final measured offsets stdev: 0.000745      0.000140      0.000157      0.001397
+Final measured gains mean:    0.999985      0.999990      0.999988      1.000004
+Final measured gains stdev:   0.000004      0.000002      0.000005      0.000011
+
+Saving channel 2 calibration constants to qspi
+
+
+
+
+
+
+
+
+Page 2 of 4lab{1}Chan3
+Burden resistor = 15.3846
+
+Measuring initial gains and offsets
+       Itest       dacSP       dcct1       dcct2       dacRB         err
+   -0.998673    0.999836   -1.028346   -1.028866    1.003640    0.001067
+  -58.003737   58.013623  -57.617279  -57.627529   58.083878    0.073092
+
+                                   dacSP         dcct1         dcct2         dacRB
+Initial measured offsets:      -0.001011     -0.036963     -0.037313      0.000000
+Initial measured gains:         1.000153      0.992700      0.992871      1.001166
+Gain corrections:               1.000153      1.007354      1.007180      1.000000
+
+Writing gain and offset corrections for dacSP, dcct1, and dcct2 to PSC
+
+Measuring DAC readback gain and offset
+DAC SP   DAC RB
+1.000000   1.004863 
+58.000000   58.079731 
+
+Measured offset: 0.003550
+Measured gain: 1.001313
+Gain correction: 0.998688
+
+Writing gain and offset constants for dacRB to PSC
+
+Verification
+       Itest       dacSP       dcct1       dcct2       dacRB         err
+   -0.999046    0.998434   -0.998969   -0.998954    1.001525    0.009413
+  -58.003820   58.003934  -58.003819  -58.003628   58.006073    0.082895
+
+
+                                 dacSP         dcct1         dcct2         dacRB
+Final measured offsets:       0.000624      0.000079      0.000090      0.003108
+Final measured gains:         1.000013      1.000001      0.999998      0.999983
+
+
+
+                                 dacSP         dcct1         dcct2         dacRB
+Final measured offsets mean:  0.000199     -0.000068     -0.000326      0.002511
+Final measured offsets stdev: 0.000378      0.000098      0.000266      0.000567
+Final measured gains mean:    0.999996      0.999997      0.999991      0.999992
+Final measured gains stdev:   0.000009      0.000004      0.000004      0.000013
+
+Saving channel 3 calibration constants to qspi
+
+
+
+
+
+
+
+
+Page 3 of 4lab{1}Chan4
+Burden resistor = 7.1429
+
+Measuring initial gains and offsets
+       Itest       dacSP       dcct1       dcct2       dacRB         err
+   -0.998818    1.006320   -1.072957   -1.073756    0.983459    0.032241
+ -126.011960  126.135515 -125.296181 -125.210625  126.141235    0.055847
+
+                                   dacSP         dcct1         dcct2         dacRB
+Initial measured offsets:      -0.006574     -0.080449     -0.081939      0.000000
+Initial measured gains:         1.000928      0.993681      0.992991      1.000228
+Gain corrections:               1.000928      1.006359      1.007059      1.000000
+
+Writing gain and offset corrections for dacSP, dcct1, and dcct2 to PSC
+
+Measuring DAC readback gain and offset
+DAC SP   DAC RB
+1.000000   0.984533 
+126.000000   126.128517 
+
+Measured offset: -0.016619
+Measured gain: 1.001152
+Gain correction: 0.998849
+
+Writing gain and offset constants for dacRB to PSC
+
+Verification
+       Itest       dacSP       dcct1       dcct2       dacRB         err
+   -0.998920    0.998648   -0.999212   -1.000133    0.995406    0.001466
+ -126.011915  126.011433 -126.012100 -126.011459  126.008766    0.087262
+
+
+                                 dacSP         dcct1         dcct2         dacRB
+Final measured offsets:       0.000271     -0.000292     -0.001226     -0.003246
+Final measured gains:         0.999998      0.999999      0.999987      1.000005
+
+
+
+                                 dacSP         dcct1         dcct2         dacRB
+Final measured offsets mean:  0.000042     -0.000487     -0.001334     -0.000978
+Final measured offsets stdev: 0.000228      0.000145      0.000119      0.001559
+Final measured gains mean:    0.999991      0.999993      0.999986      1.000010
+Final measured gains stdev:   0.000006      0.000007      0.000006      0.000013
+
+Saving channel 4 calibration constants to qspi
+
+
+
+
+
+Test data reviewed by ______________________________   Date_____________
+
+
+Page 4 of 4

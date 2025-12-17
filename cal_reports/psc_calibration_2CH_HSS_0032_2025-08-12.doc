@@ -1,0 +1,106 @@
+Report of Calibration
+PSC S/N: 2CH_HSS_0032
+2025-08-12 16:30:43
+
+Calibration Current standard: BNL PSC ATE S/N 001
+Calibration Volt standard: HP 3458A-002 S/N 2823A 06900
+Calibration Resistance standard: Fluke 742A-1 S/N 1063008
+End Header
+
+
+lab{1}Chan1
+Burden resistor = 18.0000
+
+Measuring initial gains and offsets
+       Itest       dacSP       dcct1       dcct2       dacRB         err
+   -0.998130    0.991486   -1.020845   -1.021484    0.996227    0.008002
+  -50.002701   50.016849  -49.663387  -49.645458   50.106541    0.083061
+
+                                   dacSP         dcct1         dcct2         dacRB
+Initial measured offsets:       0.007067     -0.030089     -0.031106      0.000000
+Initial measured gains:         1.000424      0.992612      0.992233      1.001733
+Gain corrections:               1.000424      1.007443      1.007827      1.000000
+
+Writing gain and offset corrections for dacSP, dcct1, and dcct2 to PSC
+
+Measuring DAC readback gain and offset
+DAC SP   DAC RB
+1.000000   0.998349 
+50.000000   50.103508 
+
+Measured offset: -0.003797
+Measured gain: 1.002146
+Gain correction: 0.997858
+
+Writing gain and offset constants for dacRB to PSC
+
+Verification
+       Itest       dacSP       dcct1       dcct2       dacRB         err
+   -0.998236    0.998037   -0.998203   -0.998263    0.997994    0.011613
+  -50.002777   50.002340  -50.002716  -50.002678   50.002663    0.065805
+
+
+                                 dacSP         dcct1         dcct2         dacRB
+Final measured offsets:       0.000194      0.000033     -0.000029     -0.000050
+Final measured gains:         0.999995      0.999999      0.999997      1.000007
+
+
+
+                                 dacSP         dcct1         dcct2         dacRB
+Final measured offsets mean:  0.000136     -0.000124     -0.000114     -0.000006
+Final measured offsets stdev: 0.000168      0.000132      0.000094      0.000098
+Final measured gains mean:    0.999995      0.999994      0.999994      1.000005
+Final measured gains stdev:   0.000005      0.000003      0.000002      0.000005
+
+Saving channel 1 calibration constants to qspi
+
+Page 1 of 2lab{1}Chan2
+Burden resistor = 9.0000
+
+Measuring initial gains and offsets
+       Itest       dacSP       dcct1       dcct2       dacRB         err
+   -0.998167    1.016676   -1.060356   -1.056506    1.005659    0.000640
+ -100.008284  100.102299  -99.386772  -99.298820  100.223396    0.073624
+
+                                   dacSP         dcct1         dcct2         dacRB
+Initial measured offsets:      -0.017748     -0.069083     -0.066080      0.000000
+Initial measured gains:         1.000763      0.993095      0.992245      1.001333
+Gain corrections:               1.000763      1.006953      1.007815      1.000000
+
+Writing gain and offset corrections for dacSP, dcct1, and dcct2 to PSC
+
+Measuring DAC readback gain and offset
+DAC SP   DAC RB
+1.000000   1.007019 
+100.000000   100.215073 
+
+Measured offset: 0.004917
+Measured gain: 1.002102
+Gain correction: 0.997903
+
+Writing gain and offset constants for dacRB to PSC
+
+Verification
+       Itest       dacSP       dcct1       dcct2       dacRB         err
+   -0.998266    0.998216   -0.998250   -0.998217    1.001963    0.009269
+ -100.008361  100.007982 -100.008186 -100.007957  100.009712    0.073324
+
+
+                                 dacSP         dcct1         dcct2         dacRB
+Final measured offsets:       0.000046      0.000014      0.000045      0.003767
+Final measured gains:         0.999997      0.999998      0.999996      0.999980
+
+
+
+                                 dacSP         dcct1         dcct2         dacRB
+Final measured offsets mean:  0.000177     -0.000172     -0.000230      0.003982
+Final measured offsets stdev: 0.000126      0.000120      0.000151      0.000282
+Final measured gains mean:    0.999995      0.999991      0.999990      0.999990
+Final measured gains stdev:   0.000005      0.000004      0.000005      0.000007
+
+Saving channel 2 calibration constants to qspi
+
+
+
+
+Page 2 of 2

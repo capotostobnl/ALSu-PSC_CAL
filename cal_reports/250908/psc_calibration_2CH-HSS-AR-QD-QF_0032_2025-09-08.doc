@@ -1,0 +1,112 @@
+Report of Calibration
+PSC 2CH-HSS-AR-QD-QF_S/N 0032
+2025-09-08 15:11:15
+
+Calibration Current standard: BNL PSC ATE S/N 001
+Calibration Volt standard: HP 3458A-002 S/N 2823A 06900
+Calibration Resistance standard: Fluke 742A-1 S/N 1063008
+End Header
+
+
+lab{1}Chan1
+Burden resistor = 18.0000
+
+Measuring initial gains and offsets
+       Itest       dacSP       dcct1       dcct2       dacRB         err
+   -1.000516    0.994041   -1.023869   -1.024292    0.998471    0.011365
+  -50.002158   50.031299  -49.677799  -49.658463   50.121140    0.088307
+
+                                   dacSP         dcct1         dcct2         dacRB
+Initial measured offsets:       0.007202     -0.030453     -0.031279      0.000000
+Initial measured gains:         1.000727      0.992904      0.992501      1.001742
+Gain corrections:               1.000727      1.007147      1.007556      1.000000
+
+Writing gain and offset corrections for dacSP, dcct1, and dcct2 to PSC
+
+Measuring DAC readback gain and offset
+DAC SP   DAC RB
+1.000000   0.998177 
+50.000000   50.119160 
+
+Measured offset: -0.004293
+Measured gain: 1.002469
+Gain correction: 0.997537
+
+Writing gain and offset constants for dacRB to PSC
+
+Verification
+       Itest       dacSP       dcct1       dcct2       dacRB         err
+   -1.000567    1.000289   -1.000301   -1.000288    0.999852    0.024257
+  -50.002228   50.001180  -50.001465  -50.001472   50.001270    0.078489
+
+
+                                 dacSP         dcct1         dcct2         dacRB
+Final measured offsets:       0.000262      0.000256      0.000269     -0.000448
+Final measured gains:         0.999984      0.999990      0.999990      1.000011
+
+
+
+                                 dacSP         dcct1         dcct2         dacRB
+Final measured offsets mean:  0.000136     -0.000051     -0.000115     -0.000331
+Final measured offsets stdev: 0.000100      0.000157      0.000205      0.000076
+Final measured gains mean:    0.999981      0.999981      0.999979      1.000001
+Final measured gains stdev:   0.000007      0.000009      0.000010      0.000009
+
+Saving channel 1 calibration constants to qspi
+
+
+
+Page 1 of 2lab{1}Chan2
+Burden resistor = 9.0000
+
+Measuring initial gains and offsets
+       Itest       dacSP       dcct1       dcct2       dacRB         err
+   -0.999850    1.018624   -1.063169   -1.058933    1.007628    0.002092
+ -100.003881  100.123377  -99.407257  -99.317444  100.241936    0.076208
+
+                                   dacSP         dcct1         dcct2         dacRB
+Initial measured offsets:      -0.017757     -0.069983     -0.066612      0.000000
+Initial measured gains:         1.001017      0.993334      0.992470      1.001307
+Gain corrections:               1.001017      1.006711      1.007587      1.000000
+
+Writing gain and offset corrections for dacSP, dcct1, and dcct2 to PSC
+
+Measuring DAC readback gain and offset
+DAC SP   DAC RB
+1.000000   1.007628 
+100.000000   100.238281 
+
+Measured offset: 0.005298
+Measured gain: 1.002330
+Gain correction: 0.997676
+
+Writing gain and offset constants for dacRB to PSC
+
+Verification
+       Itest       dacSP       dcct1       dcct2       dacRB         err
+   -1.000025    0.999999   -0.999772   -0.999920    1.004156    0.007247
+ -100.004203  100.002779 -100.003036 -100.003189  100.007156    0.062477
+
+
+                                 dacSP         dcct1         dcct2         dacRB
+Final measured offsets:       0.000012      0.000244      0.000096      0.004155
+Final measured gains:         0.999986      0.999991      0.999991      1.000002
+
+
+
+                                 dacSP         dcct1         dcct2         dacRB
+Final measured offsets mean:  0.000107     -0.000085     -0.000162      0.004409
+Final measured offsets stdev: 0.000152      0.000188      0.000135      0.000300
+Final measured gains mean:    0.999987      0.999985      0.999985      0.999992
+Final measured gains stdev:   0.000004      0.000005      0.000004      0.000011
+
+Saving channel 2 calibration constants to qspi
+
+
+
+
+
+Test data reviewed by ______________________________   Date_____________
+
+
+Page 2 of 2
