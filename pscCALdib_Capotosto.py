@@ -7,8 +7,46 @@ import time
 import sys
 import socket
 import os
+from reportlab.lib.pagesizes import LETTER
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+
 
 ATE_IP_ADDRESS = '10.69.26.3'
+
+
+def text_report_to_pdf(txt_file, pdf_file):
+    c = canvas.Canvas(pdf_file, pagesize=LETTER)
+    width, height = LETTER
+
+    x_margin = 0.75 * inch
+    y_margin = 0.75 * inch
+    y = height - y_margin
+
+    line_height = 10
+
+    # Use a monospaced font
+    c.setFont("Courier", 9)
+
+    with open(txt_file, "r") as f:
+        for line in f:
+            # Form-feed → new page
+            if "\f" in line:
+                c.showPage()
+                c.setFont("Courier", 9)
+                y = height - y_margin
+                continue
+
+            c.drawString(x_margin, y, line.rstrip("\n"))
+            y -= line_height
+
+            # Auto page break
+            if y < y_margin:
+                c.showPage()
+                c.setFont("Courier", 9)
+                y = height - y_margin
+
+    c.save()
 
 #SN = sys.argv[1] # chassis serial number
 print("")
@@ -559,10 +597,11 @@ for j in range(len(chan)): # loop through channels
 	fp.write("\nPage %d of %d" % ((j+1), len(chan)))
 	caput(psc+chan[j]+':WriteQspi-SP', 1) # write all data to qspi
 	
-	if j<3:
-		#fp.write("\r\n") # form feed aka page break
-		fp.write("\f") # form feed aka page break
-
+	#f j<3:
+	#	#fp.write("\r\n") # form feed aka page break
+	#	fp.write("\f") # form feed aka page break
+	if j < len(chan) - 1:
+		fp.write("\f")
 print("Calibration complete.")
 
 
@@ -581,4 +620,7 @@ for x in ['1', '2', '3', '4']:
 file_str1 = "/home/pstester/PSC_Test_And_Cal/cal/cal_reports/psc_calibration_" + designation + SN + "_" + formatted_date + ".doc"
 os.system(f'cp "{file_str}" "{file_str1}"')
 
-
+text_report_to_pdf(
+    "psc_calibration_temp.doc",
+    "psc_calibration_report.pdf"
+)
