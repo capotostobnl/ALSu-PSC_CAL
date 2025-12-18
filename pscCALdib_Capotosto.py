@@ -617,10 +617,10 @@ for x in ['1', '2', '3', '4']:
 	time.sleep(0.5)
 
 
-file_str1 = "/home/pstester/PSC_Test_And_Cal/cal/cal_reports/psc_calibration_" + designation + SN + "_" + formatted_date + ".doc"
-os.system(f'cp "{file_str}" "{file_str1}"')
+file_str1 = "/home/pstester/PSC_Test_And_Cal/cal/cal_reports/psc_calibration_" + designation + SN + "_" + formatted_date
+os.system(f'cp "{file_str}" "{file_str1}.doc"')
 
 text_report_to_pdf(
     "psc_calibration_temp.doc",
-    "psc_calibration_report.pdf"
+    f"{file_str1}.pdf"
 )
