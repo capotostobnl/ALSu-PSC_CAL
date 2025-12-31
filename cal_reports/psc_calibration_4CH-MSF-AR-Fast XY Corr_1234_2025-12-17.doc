@@ -1,0 +1,59 @@
+Report of Calibration
+PSC 4CH-MSF-AR-Fast XY Corr_S/N 1234
+2025-12-17 23:17:39
+
+Calibration Current standard: BNL PSC ATE S/N 001
+Calibration Volt standard: HP 3458A-002 S/N 2823A 23647
+Calibration Resistance standard: Fluke 742A-1 S/N 1063008
+End Header
+
+
+lab{2}Chan4
+Burden resistor = 33.3333
+
+Measuring initial gains and offsets
+       Itest       dacSP       dcct1       dcct2       dacRB         err
+   -1.000436    0.173727   -0.077346   -0.076119    0.166840    3.677933
+  -27.001915   26.100055   -0.077230   -0.075938   26.100330    9.999390
+
+                                   dacSP         dcct1         dcct2         dacRB
+Initial measured offsets:       0.823817     -0.077350     -0.076126      0.000000
+Initial measured gains:         0.997110     -0.000004     -0.000007      1.000276
+Gain corrections:               0.997110-225851.635003-143727.995720      1.000000
+
+Writing gain and offset corrections for dacSP, dcct1, and dcct2 to PSC
+
+Measuring DAC readback gain and offset
+DAC SP   DAC RB
+1.000000   0.169087 
+27.000000   26.100950 
+
+Measured offset: -0.828292
+Measured gain: 0.997379
+Gain correction: 1.002628
+
+Writing gain and offset constants for dacRB to PSC
+
+Verification
+       Itest       dacSP       dcct1       dcct2       dacRB         err
+   -1.000423    0.887910    0.000000    0.000000    0.887541    0.304392
+  -27.001911   26.100055    0.000000    0.000000   26.099760    9.999390
+
+
+                                 dacSP         dcct1         dcct2         dacRB
+Final measured offsets:       0.082142      0.000000      0.000000     -0.000372
+Final measured gains:         0.969642     -0.000000     -0.000000      1.000003
+
+
+
+                                 dacSP         dcct1         dcct2         dacRB
+Final measured offsets mean:  0.082047      0.000000      0.000000     -0.000186
+Final measured offsets stdev: 0.000396      0.000000      0.000000      0.000225
+Final measured gains mean:    0.969658      0.000000      0.000000      1.000008
+Final measured gains stdev:   0.000016      0.000000      0.000000      0.000007
+
+Saving channel 1 calibration constants to qspi
+Test data reviewed by ______________________________   Date_____________
+
+
+Page 1 of 1
