@@ -7,46 +7,8 @@ import time
 import sys
 import socket
 import os
-from reportlab.lib.pagesizes import LETTER
-from reportlab.pdfgen import canvas
-from reportlab.lib.units import inch
-
 
 ATE_IP_ADDRESS = '10.69.26.3'
-
-
-def text_report_to_pdf(txt_file, pdf_file):
-	c = canvas.Canvas(pdf_file, pagesize=LETTER)
-	width, height = LETTER
-
-	x_margin = 0.75 * inch
-	y_margin = 0.75 * inch
-	y = height - y_margin
-
-	line_height = 10
-
-	# Use a monospaced font
-	c.setFont("Courier", 9)
-
-	with open(txt_file, "r") as f:
-		for line in f:
-			# Form-feed → new page
-			if "\f" in line:
-				c.showPage()
-				c.setFont("Courier", 9)
-				y = height - y_margin
-				continue
-
-			c.drawString(x_margin, y, line.rstrip("\n"))
-			y -= line_height
-
-			# Auto page break
-			if y < y_margin:
-				c.showPage()
-				c.setFont("Courier", 9)
-				y = height - y_margin
-
-	c.save()
 
 #SN = sys.argv[1] # chassis serial number
 print("")
@@ -120,7 +82,7 @@ if model == '4':
 	designation = "4CH-MSS-AR Slow XY Corr_"
 	Ndcct = 1000.0
 	chan = ['1', '2', '3', '4']
-	Rb = [33.333333, 33.333333, 33.333333, 33.333333]
+	Rb = [83.333333, 83.333333, 83.333333, 83.333333]
 	SF_Vout = [1.9, 1.9, 1.9, 1.9]
 	SF_Spare = [-5, -5, -5, -5]
 	OVC1_Flt_Threshold = [24.5, 24.5, 24.5, 24.5]
@@ -221,47 +183,46 @@ def set_atsdac_cal_source(Ival):
 
 
 def measure_testpoints(I, sp, j, verbose):
-	#i0 = -Ifs*0.1 # unipolar
-	#set_keithley2401(I)
-	set_atsdac_cal_source(I)
-	#time.sleep(5)
-	if verbose:
-		print("Adjusting DAC for null error")
-	#td = [2, 2, 2] # wait time after changing DAC
-	td=2
-	#err=0
-	i=0
-	caput(psc+chan[j]+':DAC_SetPt-SP', sp)    # set DAC
-	time.sleep(td)
-	err = caget(psc+chan[j]+':Error-I') # get err
-	#for i in range(3):
-	# choose Ifs*2 as max allowable value of error for null. i==0 condition ensures that loop runs once. 
-	while abs(err)>Ifs*2 and i<12 or i==0:
-		set_atsdac_cal_source(I)  
-		#if verbose:
-		if(True):
-			 print("adjustment %d" % i)
-		#caput(psc+chan[j]+':SF:AmpsperSec-SP', R[i]) #set ramp rate
-		#time.sleep(td[i])
-		dac = sp - err/400*G
-		sp = dac
-		caput(psc+chan[j]+':DAC_SetPt-SP', sp)    # set DAC
-		time.sleep(td)
-		err = caget(psc+chan[j]+':Error-I') # get err
-		i+=1
-		#print(i)
+    #i0 = -Ifs*0.1 # unipolar
+    #set_keithley2401(I)
+    set_atsdac_cal_source(I)
+    #time.sleep(5)
+    if verbose:
+        print("Adjusting DAC for null error")
+    #td = [2, 2, 2] # wait time after changing DAC
+    td=2
+    #err=0
+    i=0
+    caput(psc+chan[j]+':DAC_SetPt-SP', sp)    # set DAC
+    time.sleep(td)
+    err = caget(psc+chan[j]+':Error-I') # get err
+    #for i in range(3):
+    # choose Ifs*2 as max allowable value of error for null. i==0 condition ensures that loop runs once. 
+    while abs(err)>Ifs*2 and i<12 or i==0:  
+        #if verbose:
+        if(True):
+             print("adjustment %d" % i)
+        #caput(psc+chan[j]+':SF:AmpsperSec-SP', R[i]) #set ramp rate
+        #time.sleep(td[i])
+        dac = sp - err/400*G
+        sp = dac
+        caput(psc+chan[j]+':DAC_SetPt-SP', sp)    # set DAC
+        time.sleep(td)
+        err = caget(psc+chan[j]+':Error-I') # get err
+        i+=1
+        #print(i)
 
-	adc1 = caget(psc+chan[j]+':DCCT1-I')
-	adc2 = caget(psc+chan[j]+':DCCT2-I')
-	adc3 = caget(psc+chan[j]+':DAC-I')
-	dmm = float(get_3458A().decode('utf-8')) - dmm_offs # reference current i0
-	
-	#caput(psc+chan[j]+':SF:AmpsperSec-SP', 10)
-	#time.sleep(1)  
-	
-	return [dmm*gtarget*G, dac, adc1, adc2, adc3, err]
-	
-	
+    adc1 = caget(psc+chan[j]+':DCCT1-I')
+    adc2 = caget(psc+chan[j]+':DCCT2-I')
+    adc3 = caget(psc+chan[j]+':DAC-I')
+    dmm = float(get_3458A().decode('utf-8')) - dmm_offs # reference current i0
+    
+    #caput(psc+chan[j]+':SF:AmpsperSec-SP', 10)
+    #time.sleep(1)  
+    
+    return [dmm*gtarget*G, dac, adc1, adc2, adc3, err]
+    
+    
 def compute_m_b(y0, y1):
 	m1 = (y1[2]-y0[2])/(y1[0]-y0[0])
 	m2 = (y1[3]-y0[3])/(y1[0]-y0[0])
@@ -598,11 +559,10 @@ for j in range(len(chan)): # loop through channels
 	fp.write("\nPage %d of %d" % ((j+1), len(chan)))
 	caput(psc+chan[j]+':WriteQspi-SP', 1) # write all data to qspi
 	
-	#f j<3:
-	#	#fp.write("\r\n") # form feed aka page break
-	#	fp.write("\f") # form feed aka page break
-	if j < len(chan) - 1:
-		fp.write("\f")
+	if j<3:
+		#fp.write("\r\n") # form feed aka page break
+		fp.write("\f") # form feed aka page break
+
 print("Calibration complete.")
 
 
@@ -618,10 +578,7 @@ for x in ['1', '2', '3', '4']:
 	time.sleep(0.5)
 
 
-file_str1 = "/home/pstester/PSC_Test_And_Cal/cal/cal_reports/psc_calibration_" + designation + SN + "_" + formatted_date
-os.system(f'cp "{file_str}" "{file_str1}.doc"')
+file_str1 = "/home/pstester/PSC_Test_And_Cal/cal/cal_reports/psc_calibration_" + designation + SN + "_" + formatted_date + ".doc"
+os.system(f'cp "{file_str}" "{file_str1}"')
 
-text_report_to_pdf(
-	"psc_calibration_temp.doc",
-	f"{file_str1}.pdf"
-)
+
