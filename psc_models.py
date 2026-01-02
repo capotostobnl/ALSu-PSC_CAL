@@ -71,13 +71,50 @@ class PSCConfig:
     ndcct: float
     channels: int
     burden_resistors: ChannelValues
-    sf_vout: ChannelValues
-    sf_spare: ChannelValues
     ovc1_threshold: ChannelValues
     ovc2_threshold: ChannelValues
     ovv_threshold: ChannelValues
     num_runs: int = 5
 
+    # -------------------------------------------------------------------------
+    # Scale Factors
+    # -------------------------------------------------------------------------
+    current_full_scale_dividend: float = 1.0
+    g_target_multiplier: float = 10.0
+
+    sf_ramp_rate: float = 4.0
+    sf_dcct_scale: float | None = None  # Will use p_scale_factor if None
+    sf_vout: ChannelValues
+    sf_ignd: float = 1.0
+    sf_spare: ChannelValues
+    sf_regulator: float = 1.0
+    sf_error: float = 1.0
+
+    # -------------------------------------------------------------------------
+    # Fault Thresholds
+    # -------------------------------------------------------------------------
+    ovc1_threshold: ChannelValues
+    ovc2_threshold: ChannelValues
+    ovv_threshold: ChannelValues
+    err1_threshold: float = 10
+    err2_threshold: float = 10
+    ignd_threshold: float = 10
+
+    # -------------------------------------------------------------------------
+    # Fault Count Limits
+    # -------------------------------------------------------------------------
+    ovc1_flt_cnt: float = 0.01
+    ovc2_flt_cnt: float = 0.01
+    ovv_flt_cnt: float = 0.01
+    err1_flt_cnt: float = 0.1
+    err2_flt_cnt: float = 0.1
+    ignd_flt_cnt: float = 0.2
+    dcct_flt_cnt: float = 0.2
+    flt1_flt_cnt: float = 0.1
+    flt2_flt_cnt: float = 3
+    flt3_flt_cnt: float = 0.5
+    flt_on_cnt: float = 3
+    flt_heartbeat_cnt: float = 3
 
 # -----------------------------------------------------------------------------
 # Model Definitions

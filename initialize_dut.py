@@ -17,7 +17,7 @@ from dataclasses import dataclass, field
 from typing import Tuple
 from time import sleep
 from EPICS_Adapters.psc_epics import PSC
-from psc_models import PSCModel, get_psc_model_from_user
+from psc_models import get_psc_model_from_user
 
 
 @dataclass
@@ -28,7 +28,6 @@ class DUT:
         psc_sn: Zero-padded 4-digit PSC serial number (e.g., '0042').
         pv_prefix: EPICS PV prefix of the PSC (e.g., 'lab{3}').
         psc: EPICS adapter created after pv_prefix is known.
-        model: PSCModel dataclass with parameters/limits for different models
         report_dir: Per-shipment report directory path.
         raw_data_dir: Timestamped raw-data subdirectory path for this run.
         num_channels: Number of PSC channels (queried from EPICS).
@@ -42,7 +41,6 @@ class DUT:
     psc_sn: str = ""
     pv_prefix: str = ""
     psc: PSC | None = None
-    model: PSCModel = field(init=False)
 
     # --- filesystem / run info ---
     report_dir: str = field(init=False, default="")

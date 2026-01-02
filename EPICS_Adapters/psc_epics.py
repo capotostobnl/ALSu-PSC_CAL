@@ -237,6 +237,57 @@ class PSC:
         self.safe_put("IGND_Flt_Threshold-SP", val, ch=ch)
 
     # -----------------------------------------------------------------
+    # Fault Count Limit Setters
+    # -----------------------------------------------------------------
+    def set_count_limit_ovc1(self, ch: int, val: float):
+        """Set Over Current 1 Count Limit. PV: OVC1_Flt_CntLim-SP"""
+        self.safe_put("OVC1_Flt_CntLim-SP", val, ch=ch)
+
+    def set_count_limit_ovc2(self, ch: int, val: float):
+        """Set Over Current 2 Count Limit. PV: OVC2_Flt_CntLim-SP"""
+        self.safe_put("OVC2_Flt_CntLim-SP", val, ch=ch)
+
+    def set_count_limit_ovv(self, ch: int, val: float):
+        """Set Over Voltage Count Limit. PV: OVV_Flt_CntLim-SP"""
+        self.safe_put("OVV_Flt_CntLim-SP", val, ch=ch)
+
+    def set_count_limit_err1(self, ch: int, val: float):
+        """Set Error 1 Count Limit. PV: ERR1_Flt_CntLim-SP"""
+        self.safe_put("ERR1_Flt_CntLim-SP", val, ch=ch)
+
+    def set_count_limit_err2(self, ch: int, val: float):
+        """Set Error 2 Count Limit. PV: ERR2_Flt_CntLim-SP"""
+        self.safe_put("ERR2_Flt_CntLim-SP", val, ch=ch)
+
+    def set_count_limit_ignd(self, ch: int, val: float):
+        """Set Ground Current Count Limit. PV: IGND_Flt_CntLim-SP"""
+        self.safe_put("IGND_Flt_CntLim-SP", val, ch=ch)
+
+    def set_count_limit_dcct(self, ch: int, val: float):
+        """Set DCCT Fault Count Limit. PV: DCCT_Flt_CntLim-SP"""
+        self.safe_put("DCCT_Flt_CntLim-SP", val, ch=ch)
+
+    def set_count_limit_flt1(self, ch: int, val: float):
+        """Set Fault 1 Count Limit. PV: FLT1_Flt_CntLim-SP"""
+        self.safe_put("FLT1_Flt_CntLim-SP", val, ch=ch)
+
+    def set_count_limit_flt2(self, ch: int, val: float):
+        """Set Fault 2 Count Limit. PV: FLT2_Flt_CntLim-SP"""
+        self.safe_put("FLT2_Flt_CntLim-SP", val, ch=ch)
+
+    def set_count_limit_flt3(self, ch: int, val: float):
+        """Set Fault 3 Count Limit. PV: FLT3_Flt_CntLim-SP"""
+        self.safe_put("FLT3_Flt_CntLim-SP", val, ch=ch)
+
+    def set_count_limit_on(self, ch: int, val: float):
+        """Set ON Fault Count Limit. PV: ON_Flt_CntLim-SP"""
+        self.safe_put("ON_Flt_CntLim-SP", val, ch=ch)
+
+    def set_count_limit_heartbeat(self, ch: int, val: float):
+        """Set Heartbeat Fault Count Limit. PV: HeartBeat_Flt_CntLim-SP"""
+        self.safe_put("HeartBeat_Flt_CntLim-SP", val, ch=ch)
+
+    # -----------------------------------------------------------------
     # Gain Setters
     # -----------------------------------------------------------------
 

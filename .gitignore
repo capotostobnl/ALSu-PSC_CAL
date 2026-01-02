@@ -1,5 +1,6 @@
-#*.png*
-#*.doc*
-#*.txt*
-#*.h5*
-#tom_scripts/
+*.png*
+*.doc*
+*.txt*
+*.h5*
+tom_scripts/
+__pycache__
