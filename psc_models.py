@@ -65,37 +65,37 @@ class PSCConfig:
         ovv_threshold: ChannelValues for Over-Voltage Threshold (Volts).
         num_runs: Number of runs to take per channel
     """
-    model_id: str
-    display_name: str
-    designation: str
-    ndcct: float
-    channels: int
-    burden_resistors: ChannelValues
-    ovc1_threshold: ChannelValues
-    ovc2_threshold: ChannelValues
-    ovv_threshold: ChannelValues
+    model_id: str = None
+    display_name: str = None
+    designation: str = None
+    ndcct: float = None
+    channels: int = None
+    burden_resistors: ChannelValues = None
+    ovc1_threshold: ChannelValues = None
+    ovc2_threshold: ChannelValues = None
+    ovv_threshold: ChannelValues = None
     num_runs: int = 5
 
     # -------------------------------------------------------------------------
     # Scale Factors
     # -------------------------------------------------------------------------
-    current_full_scale_dividend: float = 1.0
+    Ifs_dividend: float = 1.0
     g_target_multiplier: float = 10.0
 
     sf_ramp_rate: float = 4.0
     sf_dcct_scale: float | None = None  # Will use p_scale_factor if None
-    sf_vout: ChannelValues
+    sf_vout: ChannelValues = None
     sf_ignd: float = 1.0
-    sf_spare: ChannelValues
+    sf_spare: ChannelValues = None
     sf_regulator: float = 1.0
     sf_error: float = 1.0
 
     # -------------------------------------------------------------------------
     # Fault Thresholds
     # -------------------------------------------------------------------------
-    ovc1_threshold: ChannelValues
-    ovc2_threshold: ChannelValues
-    ovv_threshold: ChannelValues
+    ovc1_threshold: ChannelValues = None
+    ovc2_threshold: ChannelValues = None
+    ovv_threshold: ChannelValues = None
     err1_threshold: float = 10
     err2_threshold: float = 10
     ignd_threshold: float = 10
@@ -122,7 +122,7 @@ class PSCConfig:
 
 MODELS = {
     # 2-Channel Units
-    "ABend-QFA": PSCConfig(
+    "AR-R3-ABend-QFA": PSCConfig(
         model_id="ABend-QFA",
         display_name="2CH-HSS-AR-ABend-QFA",
         designation="2CH-HSS-AR-ABend-QFA_",
@@ -179,7 +179,7 @@ MODELS = {
         ovc2_threshold=ChannelValues(ch1=24.5, ch2=24.5, ch3=24.5, ch4=24.5),
         ovv_threshold=ChannelValues(ch1=18.5, ch2=18.5, ch3=18.5, ch4=18.5),
     ),
-    "AR-SD-SF": PSCConfig(
+    "AR-R2-SD-SF": PSCConfig(
         model_id="AR-SD-SF",
         display_name="4CH-MSS-AR-SD-SF",
         designation="4CH-MSS-AR-SD-SF_",
@@ -206,6 +206,20 @@ MODELS = {
         ovc1_threshold=ChannelValues(ch1=24.5, ch2=24.5, ch3=24.5, ch4=24.5),
         ovc2_threshold=ChannelValues(ch1=24.5, ch2=24.5, ch3=24.5, ch4=24.5),
         ovv_threshold=ChannelValues(ch1=18.5, ch2=18.5, ch3=18.5, ch4=18.5),
+    ),
+    "AR-R3-QFA_SHUNT": PSCConfig(
+        model_id="AR-SK",
+        display_name="4CH-MSS-AR-QFA_Shunt",
+        designation="4CH-MSS-AR-QFA_Shunt_",
+        ndcct=1000.0,
+        channels=4,
+        burden_resistors=ChannelValues(ch1=83.333333, ch2=83.333333,
+                                       ch3=83.333333, ch4=83.333333),
+        sf_vout=ChannelValues(ch1=-2, ch2=-2, ch3=-2, ch4=-2),
+        sf_spare=ChannelValues(ch1=-20.0, ch2=-20.0, ch3=-20.0, ch4=-20.0),
+        ovc1_threshold=ChannelValues(ch1=6, ch2=6, ch3=6, ch4=6),
+        ovc2_threshold=ChannelValues(ch1=6, ch2=6, ch3=6, ch4=6),
+        ovv_threshold=ChannelValues(ch1=12, ch2=12, ch3=12, ch4=12),
     ),
 }
 
@@ -244,7 +258,7 @@ def get_psc_model_from_user(num_channels: int) -> PSCConfig:
     print(f"\n--- Select {num_channels}-Channel PSC Type ---")
     for i, model in enumerate(available_models, 1):
         label = f"'{model.display_name}'".ljust(max_label_len)
-        print(f"{i}. {label} | {model.description}")
+        print(f"{i}. {label} | {model.designation}")
 
     while True:
         try:

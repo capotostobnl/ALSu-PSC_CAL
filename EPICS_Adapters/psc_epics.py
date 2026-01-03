@@ -86,7 +86,7 @@ class PSC:
         if ch is not None:
             # e.g. "lab{5}" + "Chan1" + ":" + "DAC-I"
             return f"{self.prefix}{self.ch_fmt.format(ch)}:{suffix}"
-        return f"{self.prefix}:{suffix}"
+        return f"{self.prefix}{suffix}"
 
     def flush_io(self) -> None:
         """
@@ -143,7 +143,7 @@ class PSC:
 
     def set_dac_setpt(self, ch: int, amps: float) -> bool:
         """Set the DAC current setpoint (Amps)."""
-        return self.safe_put("DAC_SetPt-SP", amps, ch=ch)
+        return self.safe_put("DAC_SetPt-SP", amps, ch=ch, wait=False)
 
     def set_power_on1(self, ch: int, val: int | bool) -> bool:
         """Set Power On 1 Command (1/True=On, 0/False=Off)."""
@@ -293,39 +293,39 @@ class PSC:
 
     def set_gain_dac_setpoint(self, ch: int, val: float):
         """Set DAC Setpoint Gain. PV: DACSetPt-Gain-SP"""
-        self.safe_put("DACSetPt-Gain-SP", val, ch=ch)
+        self.safe_put("DACSetPt-Gain-SP", val, ch=ch, wait=False)
 
     def set_gain_dcct1(self, ch: int, val: float):
         """Set DCCT1 Gain. PV: DCCT1-Gain-SP"""
-        self.safe_put("DCCT1-Gain-SP", val, ch=ch)
+        self.safe_put("DCCT1-Gain-SP", val, ch=ch, wait=False)
 
     def set_gain_dcct2(self, ch: int, val: float):
         """Set DCCT2 Gain. PV: DCCT2-Gain-SP"""
-        self.safe_put("DCCT2-Gain-SP", val, ch=ch)
+        self.safe_put("DCCT2-Gain-SP", val, ch=ch, wait=False)
 
     def set_gain_dac_readback(self, ch: int, val: float):
         """Set DAC Readback Gain. PV: DAC-Gain-SP"""
-        self.safe_put("DAC-Gain-SP", val, ch=ch)
+        self.safe_put("DAC-Gain-SP", val, ch=ch, wait=False)
 
     def set_gain_voltage(self, ch: int, val: float):
         """Set Output Voltage Gain. PV: Volt-Gain-SP"""
-        self.safe_put("Volt-Gain-SP", val, ch=ch)
+        self.safe_put("Volt-Gain-SP", val, ch=ch, wait=False)
 
     def set_gain_ground(self, ch: int, val: float):
         """Set Ground Current Gain. PV: Gnd-Gain-SP"""
-        self.safe_put("Gnd-Gain-SP", val, ch=ch)
+        self.safe_put("Gnd-Gain-SP", val, ch=ch, wait=False)
 
     def set_gain_spare(self, ch: int, val: float):
         """Set Spare Input Gain. PV: Spare-Gain-SP"""
-        self.safe_put("Spare-Gain-SP", val, ch=ch)
+        self.safe_put("Spare-Gain-SP", val, ch=ch, wait=False)
 
     def set_gain_regulator(self, ch: int, val: float):
         """Set Regulator Gain. PV: Reg-Gain-SP"""
-        self.safe_put("Reg-Gain-SP", val, ch=ch)
+        self.safe_put("Reg-Gain-SP", val, ch=ch, wait=False)
 
     def set_gain_error(self, ch: int, val: float):
         """Set Error Gain. PV: Error-Gain-SP"""
-        self.safe_put("Error-Gain-SP", val, ch=ch)
+        self.safe_put("Error-Gain-SP", val, ch=ch, wait=False)
 
     # -----------------------------------------------------------------
     # Offset Setters
@@ -333,39 +333,39 @@ class PSC:
 
     def set_offset_dac_setpoint(self, ch: int, val: float):
         """Set DAC Setpoint Offset. PV: DACSetPt-Offset-SP"""
-        self.safe_put("DACSetPt-Offset-SP", val, ch=ch)
+        self.safe_put("DACSetPt-Offset-SP", val, ch=ch, wait=False)
 
     def set_offset_dcct1(self, ch: int, val: float):
         """Set DCCT1 Offset. PV: DCCT1-Offset-SP"""
-        self.safe_put("DCCT1-Offset-SP", val, ch=ch)
+        self.safe_put("DCCT1-Offset-SP", val, ch=ch, wait=False)
 
     def set_offset_dcct2(self, ch: int, val: float):
         """Set DCCT2 Offset. PV: DCCT2-Offset-SP"""
-        self.safe_put("DCCT2-Offset-SP", val, ch=ch)
+        self.safe_put("DCCT2-Offset-SP", val, ch=ch, wait=False)
 
     def set_offset_dac_readback(self, ch: int, val: float):
         """Set DAC Readback Offset. PV: DAC-Offset-SP"""
-        self.safe_put("DAC-Offset-SP", val, ch=ch)
+        self.safe_put("DAC-Offset-SP", val, ch=ch, wait=False)
 
     def set_offset_voltage(self, ch: int, val: float):
         """Set Output Voltage Offset. PV: Volt-Offset-SP"""
-        self.safe_put("Volt-Offset-SP", val, ch=ch)
+        self.safe_put("Volt-Offset-SP", val, ch=ch, wait=False)
 
     def set_offset_ground(self, ch: int, val: float):
         """Set Ground Current Offset. PV: Gnd-Offset-SP"""
-        self.safe_put("Gnd-Offset-SP", val, ch=ch)
+        self.safe_put("Gnd-Offset-SP", val, ch=ch, wait=False)
 
     def set_offset_spare(self, ch: int, val: float):
         """Set Spare Input Offset. PV: Spare-Offset-SP"""
-        self.safe_put("Spare-Offset-SP", val, ch=ch)
+        self.safe_put("Spare-Offset-SP", val, ch=ch, wait=False)
 
     def set_offset_regulator(self, ch: int, val: float):
         """Set Regulator Offset. PV: Reg-Offset-SP"""
-        self.safe_put("Reg-Offset-SP", val, ch=ch)
+        self.safe_put("Reg-Offset-SP", val, ch=ch, wait=False)
 
     def set_offset_error(self, ch: int, val: float):
         """Set Error Offset. PV: Error-Offset-SP"""
-        self.safe_put("Error-Offset-SP", val, ch=ch)
+        self.safe_put("Error-Offset-SP", val, ch=ch, wait=False)
 
     def reset_gains_offsets(self, ch: int):
         """

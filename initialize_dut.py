@@ -74,7 +74,7 @@ class DUT:
         self.query_psc_config()
 
         # Get PSC Model from psc_models.py Function
-        self.model = get_psc_model_from_user(self.num_channels)
+        self.psc_config = get_psc_model_from_user(self.num_channels)
 
         # Create directory structure...
         self.report_dir = \
