@@ -154,6 +154,19 @@ if model == '6':
 	OVC2_Flt_Threshold = [24.5, 24.5, 24.5, 24.5]
 	OVV_Flt_Threshold = [18.5, 18.5, 18.5, 18.5]
 
+#7. 4CH-MSS-AR QFA Shunt
+if model == '7':
+	#print("Calibrating PSC model 4CH-MSS-AR QFA Shunt")
+	designation = "4CH-MSS-AR-QFA_Shunt_"
+	Ndcct = 1000.0
+	chan = ['1', '2', '3', '4']
+	Rb = [83.333333, 83.333333, 83.333333, 83.333333]
+	SF_Vout = [-2, -2, -2, -2]
+	SF_Spare = [-20, -20, -20, -20]
+	OVC1_Flt_Threshold = [6, 6, 6, 6]
+	OVC2_Flt_Threshold = [6, 6, 6, 6]
+	OVV_Flt_Threshold = [12, 12, 12, 12]
+
 
 string1 = "Calibrating PSC model " + designation + "SN" + SN
 print(string1)
@@ -220,10 +233,13 @@ def set_atsdac_cal_source(Ival):
 	sock.sendto(b'CALDAC' + y.encode('UTF-8') + b'\n', server_address)
 
 
-def measure_testpoints(I, sp, j, verbose):
+def measure_testpoints(I, sp, j, verbose, verification):
+    #print("%3.6f" % I)
     #i0 = -Ifs*0.1 # unipolar
     #set_keithley2401(I)
-    set_atsdac_cal_source(I)
+    for i in range(4):
+        set_atsdac_cal_source(I)
+        time.sleep(0.5)
     #time.sleep(5)
     if verbose:
         print("Adjusting DAC for null error")
@@ -249,11 +265,53 @@ def measure_testpoints(I, sp, j, verbose):
         err = caget(psc+chan[j]+':Error-I') # get err
         i+=1
         #print(i)
+    if i == 12:
+        print("Calibration failed. Could not null error. Try again.")
+        sys.exit()
 
-    adc1 = caget(psc+chan[j]+':DCCT1-I')
-    adc2 = caget(psc+chan[j]+':DCCT2-I')
-    adc3 = caget(psc+chan[j]+':DAC-I')
-    dmm = float(get_3458A().decode('utf-8')) - dmm_offs # reference current i0
+    i=0
+    x=0
+    if verification==0:
+        while(i<4 and x==0):
+            adc1 = caget(psc+chan[j]+':DCCT1-I')
+            adc2 = caget(psc+chan[j]+':DCCT2-I')
+            adc3 = caget(psc+chan[j]+':DAC-I')
+            dmm = float(get_3458A().decode('utf-8')) - dmm_offs # reference current i0
+            i+=1
+            if abs(adc1+sp) < 0.08*abs(sp) and abs(adc2+sp) < 0.08*abs(sp) and \
+               abs(adc3-sp) < 0.08*abs(sp) and abs(dmm*gtarget*G+sp) < 0.08*abs(sp):
+                x=1 # if all readings good, break loop
+            time.sleep(1)    
+        if i == 4:
+            print("adc1 = %3.5f" % adc1)
+            print("adc2 = %3.5f" % adc2)
+            print("adc3 = %3.5f" % adc3)
+            print("sp = %3.5f" % sp)
+            print("dmm = %3.5f" % dmm)
+            print("Calibration failed. Bad measurements. Try again.")
+            sys.exit()
+    
+    if verification==1:
+        while(i<4 and x==0):
+            adc1 = caget(psc+chan[j]+':DCCT1-I')
+            adc2 = caget(psc+chan[j]+':DCCT2-I')
+            adc3 = caget(psc+chan[j]+':DAC-I')
+            dmm = float(get_3458A().decode('utf-8')) - dmm_offs # reference current i0
+            i+=1
+            if abs(adc1+sp) < 0.01*abs(sp) and abs(adc2+sp) < 0.01*abs(sp) and \
+               abs(adc3-sp) < 0.01*abs(sp) and abs(dmm*gtarget*G+sp) < 0.002*abs(sp):
+                x=1 # if all readings good, break loop
+            time.sleep(1)    
+        if i == 4:
+            print("adc1 = %3.5f" % adc1)
+            print("adc2 = %3.5f" % adc2)
+            print("adc3 = %3.5f" % adc3)
+            print("sp = %3.5f" % sp)
+            print("Calibration failed. Bad measurements. Try again.")
+            sys.exit()
+    
+    
+       
     
     #caput(psc+chan[j]+':SF:AmpsperSec-SP', 10)
     #time.sleep(1)  
@@ -423,14 +481,14 @@ for j in range(len(chan)): # loop through channels
 			fp.write("Burden resistor = %3.4f\n\n" % Rb[j])
 			fp.write("Measuring initial gains and offsets\n")
 		#print("Measuring i0")
-		y0 = measure_testpoints(I0, sp0, j, 0) # [dmm dac adc1 adc2 adc3 err]
+		y0 = measure_testpoints(I0, sp0, j, 0, 0) # [dmm dac adc1 adc2 adc3 err]
 		print_testpoints(y0,'v')
 		if k==N-1:
 			fprint_testpoints(y0,'v')
 		
 		#print("")
 		#print("Measuring i1")       
-		y1 = measure_testpoints(I1, sp1, j, 0) # [dmm dac adc1 adc2 adc3 err]
+		y1 = measure_testpoints(I1, sp1, j, 0, 0) # [dmm dac adc1 adc2 adc3 err]
 		#print("   I      dacSP      dcct1      dcct2      dacRB      err")
 		print_testpoints(y1,'')
 		if k==N-1:
@@ -527,12 +585,12 @@ for j in range(len(chan)): # loop through channels
 		print("Verification")
 		if k==N-1:
 			fp.write("Verification\n")
-		y0 = measure_testpoints(I0, sp0, j, 0) # [dmm dac adc1 adc2 adc3 err]
+		y0 = measure_testpoints(I0, sp0, j, 0, 1) # [dmm dac adc1 adc2 adc3 err]
 		print_testpoints(y0,'v')
 		if k==N-1:
 			fprint_testpoints(y0,'v')
 			  
-		y1 = measure_testpoints(I1, sp1, j, 0) # [dmm dac adc1 adc2 adc3 err]
+		y1 = measure_testpoints(I1, sp1, j, 0, 1) # [dmm dac adc1 adc2 adc3 err]
 		print_testpoints(y1,'')
 		if k==N-1:
 			fprint_testpoints(y1,'')
