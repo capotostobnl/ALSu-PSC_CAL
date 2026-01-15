@@ -4,14 +4,34 @@ report_generator.py
 Handles PDF generation for PSC Calibration reports using ReportLab.
 """
 
+from datetime import datetime
 from reportlab.lib.pagesizes import LETTER
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
-from datetime import datetime
 
-from initialize_dut import DUT
 
 class CalibrationReport:
+    """
+    Manages the creation and formatting of PSC Calibration PDF reports.
+
+    This class provides a high-level interface for ReportLab to generate
+    standardized calibration documents. It handles page layout, automated
+    pagination (page breaks), monospace column alignment for test data,
+    and inclusion of BNL laboratory standards metadata.
+
+    Attributes:
+        filename (str): Output path for the generated PDF.
+        c (canvas.Canvas): The ReportLab canvas object used for drawing.
+        width (float): The width of a standard LETTER page in points.
+        height (float): The height of a standard LETTER page in points.
+        x_margin (float): Horizontal margin from the left edge (0.75").
+        y_margin (float): Vertical margin from the top/bottom edges (0.75").
+        y (float): Current vertical cursor position on the page.
+        line_height (int): Vertical spacing between lines of text (12 pts).
+        designation (str): PSC model or designation (e.g., 'PSC-2HFS').
+        sn (str): The serial number of the unit under test.
+        timestamp (str): The execution time of the report generation.
+    """
     def __init__(self, filename: str, psc_designation: str,
                  serial_number: str):
         self.filename = filename
@@ -71,22 +91,24 @@ class CalibrationReport:
         # Format string matching your original spacing
         # Fixed width monospaced columns
         header_fmt = "{:>14}{:>14}{:>14}{:>14}{:>14}{:>14}"
-        data_fmt   = "{:>14.6f}{:>14.6f}{:>14.6f}{:>14.6f}{:>14.6f}{:>14.6f}"
+        data_fmt = "{:>14.6f}{:>14.6f}{:>14.6f}{:>14.6f}{:>14.6f}{:>14.6f}"
 
         if print_header:
             self._check_page_break(lines_needed=2)
-            header_str = header_fmt.format("Itest", "dacSP", "dcct1", "dcct2", "dacRB", "err")
+            header_str = header_fmt.format("Itest", "dacSP", "dcct1", "dcct2",
+                                           "dacRB", "err")
             self.write_line(header_str)
 
         row_str = data_fmt.format(*data)
         self.write_line(row_str)
 
-    def write_footer_and_save(self, channel_count: int):
+    def write_footer_and_save(self):
         """Writes the signature lines and saves the PDF."""
         self._check_page_break(lines_needed=5)
         self.write_line("")
         self.write_line("")
-        self.write_line("Test data reviewed by ______________________________   Date_____________")
+        self.write_line("Test data reviewed by ______________________________"
+                        "   Date_____________")
 
         # Save file
         self.c.save()

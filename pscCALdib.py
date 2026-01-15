@@ -1,6 +1,6 @@
 # pylint: disable=all
 # flake8: noqa
-"""import numpy as np
+import numpy as np
 import datetime
 import epics
 from epics import caget, caput
@@ -433,7 +433,7 @@ for j in range(len(chan)): # loop through channels
         print_testpoints(y1,'')
         if k==N-1:
             fprint_testpoints(y1,'')
-            
+
         #Initial measured gains/offsets
         [mdac, m1, m2, m3, bdac, b1, b2, b3] = compute_m_b(y0, y1)
 
@@ -486,7 +486,7 @@ for j in range(len(chan)): # loop through channels
             #fp.write("Measuring sp0\n")
             fp.write("DAC SP   DAC RB\n")
             fp.write("%2.6f   %2.6f \n" % (sp0, y0[4]))
-"""
+
         #print("Measuring sp1")
         caput(psc+chan[j]+':DAC_SetPt-SP', sp1)
         time.sleep(1)
@@ -510,7 +510,7 @@ for j in range(len(chan)): # loop through channels
         # write m3, b3 to PSC
         caput(psc+chan[j]+':DAC-Gain-SP', 1/m3)
         caput(psc+chan[j]+':DAC-Offset-SP', b3)
-        
+
         if k==N-1:
             fp.write("\n")
             fp.write("Measured offset: %f\n" % (b3) ) #initial measured offsets 
@@ -518,7 +518,7 @@ for j in range(len(chan)): # loop through channels
             fp.write("Gain correction: %f\n" % (1/m3) ) 
             fp.write("\n")
             fp.write("Writing gain and offset constants for dacRB to PSC\n\n")
-
+        
 
         # Verification
         print("\n\n")

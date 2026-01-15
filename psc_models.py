@@ -64,6 +64,7 @@ class PSCConfig:
         ovc2_threshold: ChannelValues for Over-Current 2 Threshold (Amps).
         ovv_threshold: ChannelValues for Over-Voltage Threshold (Volts).
         num_runs: Number of runs to take per channel
+        sp0: Initial DAC setpoint used for the low-point calibration
     """
     model_id: str
     display_name: str
@@ -75,6 +76,7 @@ class PSCConfig:
     ovc2_threshold: ChannelValues
     ovv_threshold: ChannelValues
     num_runs: int = 5
+    sp0: float = 1.0
 
     # -------------------------------------------------------------------------
     # Scale Factors
@@ -116,9 +118,29 @@ class PSCConfig:
     flt_on_cnt: float = 3
     flt_heartbeat_cnt: float = 3
 
+    # -------------------------------------------------------------------------
+    # Dynamic Calculation Methods
+    # -------------------------------------------------------------------------
+
+    def get_current_full_scale(self, channel: int) -> float:
+        """Calculates Max burden current for a specific channel."""
+        rb = getattr(self.burden_resistors, f"ch{channel}")
+        return self.current_full_scale_dividend / rb
+
+    def get_s_scale_factor(self, channel: int) -> float:
+        """Calculates V/A scaling factor: Burden * Target Multiplier."""
+        rb = getattr(self.burden_resistors, f"ch{channel}")
+        return rb * self.g_target_multiplier
+
+    def get_p_scale_factor(self, channel: int) -> float:
+        """Calculates PS scaling factor A/V: ndcct / s_scale_factor."""
+        s_scale = self.get_s_scale_factor(channel)
+        return self.ndcct / s_scale
+
 # -----------------------------------------------------------------------------
 # Model Definitions
 # -----------------------------------------------------------------------------
+
 
 MODELS = {
     # 2-Channel Units

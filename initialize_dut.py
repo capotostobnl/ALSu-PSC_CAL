@@ -48,6 +48,7 @@ class DUT:
     dir_timestamp: str = field(init=False, default="")
 
     # --- PSC configuration (populated from EPICS) ---
+    model: str = field(init=False, default="")
     num_channels: int = field(init=False, default=2)
     resolution: str = field(init=False, default="")
     bandwidth: str = field(init=False, default="")

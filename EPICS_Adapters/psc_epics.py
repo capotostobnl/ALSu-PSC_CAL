@@ -177,6 +177,12 @@ class PSC:
         """Set Averaging Mode"""
         return self.safe_put("AveMode-SP", int(val), ch=ch)
 
+    def write_qspi(self, chan: int):
+        """
+        Write setpoints to QSPI
+        """
+        self.safe_put(":WriteQspi-SP", 1, ch=chan)
+
     # =========================================================================
     # Setters (Scale Factors)
     # =========================================================================
