@@ -45,7 +45,7 @@ class ChannelValues:
         return self.as_list()[index]
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class PSCConfig:
     """
     Represents the technical specifications and calibration limits for a
@@ -266,7 +266,7 @@ def get_psc_model_from_user(num_channels: int) -> PSCConfig:
     print(f"\n--- Select {num_channels}-Channel PSC Type ---")
     for i, model in enumerate(available_models, 1):
         label = f"'{model.display_name}'".ljust(max_label_len)
-        print(f"{i}. {label} | {model.description}")
+        print(f"{i}. {label}")
 
     while True:
         try:

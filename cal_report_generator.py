@@ -13,24 +13,6 @@ from reportlab.lib.units import inch
 class CalibrationReport:
     """
     Manages the creation and formatting of PSC Calibration PDF reports.
-
-    This class provides a high-level interface for ReportLab to generate
-    standardized calibration documents. It handles page layout, automated
-    pagination (page breaks), monospace column alignment for test data,
-    and inclusion of BNL laboratory standards metadata.
-
-    Attributes:
-        filename (str): Output path for the generated PDF.
-        c (canvas.Canvas): The ReportLab canvas object used for drawing.
-        width (float): The width of a standard LETTER page in points.
-        height (float): The height of a standard LETTER page in points.
-        x_margin (float): Horizontal margin from the left edge (0.75").
-        y_margin (float): Vertical margin from the top/bottom edges (0.75").
-        y (float): Current vertical cursor position on the page.
-        line_height (int): Vertical spacing between lines of text (12 pts).
-        designation (str): PSC model or designation (e.g., 'PSC-2HFS').
-        sn (str): The serial number of the unit under test.
-        timestamp (str): The execution time of the report generation.
     """
     def __init__(self, filename: str, psc_designation: str,
                  serial_number: str):
@@ -40,12 +22,12 @@ class CalibrationReport:
 
         # Margins & Layout
         self.x_margin = 0.75 * inch
-        self.y_margin = 0.75 * inch
+        self.y_margin = 0.5 * inch  # Tighter top margin
         self.y = self.height - self.y_margin
-        self.line_height = 12
+        self.line_height = 11       # Tighter line spacing
 
         # Setup Font
-        self.c.setFont("Courier", 9)  # Monospace ensures columns align nicely
+        self.c.setFont("Courier", 9)
 
         # Metadata
         self.designation = psc_designation
@@ -54,15 +36,19 @@ class CalibrationReport:
 
     def _check_page_break(self, lines_needed=1):
         """Checks if we need a new page before writing."""
-        if self.y < (self.y_margin + (lines_needed * self.line_height)):
+        # Check against margin + footer space (approx 1.5 inches from bottom)
+        limit = self.y_margin + (1.5 * inch)
+        if self.y < (limit + (lines_needed * self.line_height)):
             self.c.showPage()
             self.c.setFont("Courier", 9)
             self.y = self.height - self.y_margin
 
     def write_line(self, text: str):
         """Writes a simple line of text and advances the cursor."""
+        # Strip newlines to prevent square glyphs
+        clean_text = text.replace('\n', '')
         self._check_page_break()
-        self.c.drawString(self.x_margin, self.y, text)
+        self.c.drawString(self.x_margin, self.y, clean_text)
         self.y -= self.line_height
 
     def write_header(self):
@@ -80,36 +66,30 @@ class CalibrationReport:
         self.write_line("")
         self.write_line("")
 
-    def add_testpoint_row(self, data: list, print_header: bool = False):
-        """
-        Writes a formatted row of test data to the PDF.
+    def draw_footer(self, current_page, total_pages):
+        """Draws the footer at a fixed location at the bottom of the page."""
+        footer_y = 0.75 * inch  # Fixed position from bottom
+        
+        # Save current font state
+        self.c.setFont("Courier", 9)
+        
+        # 1. Signature Line (ONLY on the last page)
+        if current_page == total_pages:
+            self.c.drawString(self.x_margin, footer_y, 
+                "Test data reviewed by ______________________________"
+                            "   Date_____________")
+        
+        # 2. Page Number (On every page)
+        page_str = f"Page {current_page} of {total_pages}"
+        self.c.drawString(self.x_margin, footer_y - 12, page_str)
 
-        Args:
-            data: List of floats [dmm, dac, adc1, adc2, adc3, err]
-            print_header: If True, prints the column names first.
-        """
-        # Format string matching your original spacing
-        # Fixed width monospaced columns
-        header_fmt = "{:>14}{:>14}{:>14}{:>14}{:>14}{:>14}"
-        data_fmt = "{:>14.6f}{:>14.6f}{:>14.6f}{:>14.6f}{:>14.6f}{:>14.6f}"
+    def next_page(self):
+        """Finalizes the current page and prepares the next one."""
+        self.c.showPage()
+        self.c.setFont("Courier", 9)
+        self.y = self.height - self.y_margin
 
-        if print_header:
-            self._check_page_break(lines_needed=2)
-            header_str = header_fmt.format("Itest", "dacSP", "dcct1", "dcct2",
-                                           "dacRB", "err")
-            self.write_line(header_str)
-
-        row_str = data_fmt.format(*data)
-        self.write_line(row_str)
-
-    def write_footer_and_save(self):
-        """Writes the signature lines and saves the PDF."""
-        self._check_page_break(lines_needed=5)
-        self.write_line("")
-        self.write_line("")
-        self.write_line("Test data reviewed by ______________________________"
-                        "   Date_____________")
-
-        # Save file
+    def save(self):
+        """Saves the PDF to disk."""
         self.c.save()
         print(f"Report saved to: {self.filename}")

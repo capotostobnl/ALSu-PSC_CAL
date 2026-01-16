@@ -25,9 +25,15 @@ class CalibrationLogger:
         self.report_obj = report_obj
 
     def log(self, msg):
-        print(msg)
+        print(msg)  # Print to console exactly as is
+        
         if self.report_obj:
-            self.report_obj.write_line(f"{msg}\n")
+            lines = msg.split('\n')
+            
+            for line in lines:
+                # write_line automatically moves the cursor down (y -= line_height)
+                # allowing "" to act as a spacer without printing a glyph.
+                self.report_obj.write_line(line)
 
 logger = CalibrationLogger()
 
@@ -60,6 +66,8 @@ def measure_testpoints(ate_obj, dmm_obj, psc_hw, psc_config, current, sp, chan,
     sleep(td)
 
     err = psc_hw.get_error_i(chan)
+
+    dac = 0
 
     # Iterative Adjustment Loop
     while (abs(err) > full_scale * 2 and i < 12) or i == 0:
@@ -151,10 +159,11 @@ def main():
     # Prompt the user for PSC Info
     # Create Shipment directory, Report Gen Directory, and
     # Raw Data directories for this test run.
+
     dut.prompt_inputs()
     dut.init()
 
-    psc_config = get_psc_model_from_user(dut.num_channels)
+    psc_config = dut.model
 
     ate_init(ate, dut)
 
@@ -194,7 +203,7 @@ def main():
 
         # Get DMM Zero Reading
         dmm_offs = float(dmm.read_value())
-        print("DMM zero offset reading: {dmm_offs:.7f}")
+        print(f"DMM zero offset reading: {dmm_offs:.7f}")
 
         # Set chan to CAL mode
         ate.set_mode(chan, 'CAL')
@@ -308,7 +317,8 @@ def main():
             if run == psc_config.num_runs - 1:
                 report.write_line(f"{dut.pv_prefix}Chan{chan}")
                 report.write_line(f"Burden resistor = {burden_value:3.4f}")
-                report.write_line("\nMeasuring initial gains and offsets")
+                report.write_line("")
+                report.write_line("Measuring initial gains and offsets")
 
             y_low = measure_testpoints(
                 ate_obj=ate,
@@ -325,10 +335,10 @@ def main():
             #Print testpoints
             if run == psc_config.num_runs - 1:
                 log_report(HDR_6COL)
-            log_report(
-                f"{y_low[0]:>14.6f}{y_low[1]:>14.6f}{y_low[2]:>14.6f}"
-                f"{y_low[3]:>14.6f}{y_low[4]:>14.6f}{y_low[5]:>14.6f}"
-            )
+                log_report(
+                    f"{y_low[0]:>14.6f}{y_low[1]:>14.6f}{y_low[2]:>14.6f}"
+                    f"{y_low[3]:>14.6f}{y_low[4]:>14.6f}{y_low[5]:>14.6f}"
+                )
 
 
             y_high = measure_testpoints(
@@ -337,7 +347,7 @@ def main():
                 psc_hw=dut.psc,
                 psc_config=psc_config,
                 current=span_sp,
-                sp=sp0,
+                sp=sp1,
                 chan=chan,
                 dmm_offset=dmm_offs,
                 verbose=False
@@ -396,7 +406,7 @@ def main():
 
             if run == psc_config.num_runs - 1:
                 report.write_line("")
-                report.write_line("Measuring DAC Readback gain and offset\n")
+                report.write_line("Measuring DAC Readback gain and offset")
                 report.write_line("DAC SP   DAC RB")
                 report.write_line(f"{sp0:2.6f}   {y_low[4]:2.6f} ")
 
@@ -407,7 +417,7 @@ def main():
             print(f"{sp1:2.6f}   {y_high[4]:2.6f} ", end="")
             print("")
             if run == psc_config.num_runs - 1:
-                report.write_line(f"{sp1:2.6f}   {y_high[4]:2.6f} \n")
+                report.write_line(f"{sp1:2.6f}   {y_high[4]:2.6f}")
 
             m3 = (y_high[4]-y_low[4])/(sp1-sp0)
             b3 = y_low[4]-m3*sp0
@@ -426,11 +436,12 @@ def main():
 
             if run == psc_config.num_runs - 1:
                 report.write_line("")
-                report.write_line(f"Measured offset: {b3}\n")
-                report.write_line(f"Measured gain: {m3}\n")
-                report.write_line(f"Gain Correction: {1/m3}\n")
+                report.write_line(f"Measured offset: {b3}")
+                report.write_line(f"Measured gain: {m3}")
+                report.write_line(f"Gain Correction: {1/m3}")
                 report.write_line("Writing gain and offset constants for dacRB"
-                                " to PSC\n\n")
+                                " to PSC")
+                report.write_line("")
 
             # Verification
             print("\n\nVerification")
@@ -449,9 +460,12 @@ def main():
                 dmm_offset=dmm_offs,
                 verbose=False
                 )
-            print_testpoints(y_low, 'v')
             if run == psc_config.num_runs - 1:
-                fprint_testpoints(report, y_low, 'v')
+                log_report(HDR_6COL)
+                log_report(
+                    f"{y_low[0]:>14.6f}{y_low[1]:>14.6f}{y_low[2]:>14.6f}"
+                    f"{y_low[3]:>14.6f}{y_low[4]:>14.6f}{y_low[5]:>14.6f}"
+                )
 
             # [dmm dac adc1 adc2 adc3 err]
             y_high = measure_testpoints(
@@ -460,41 +474,43 @@ def main():
                 psc_hw=dut.psc,
                 psc_config=psc_config,
                 current=span_sp,
-                sp=sp0,
+                sp=sp1,
                 chan=chan,
                 dmm_offset=dmm_offs,
                 verbose=False
                 )
-            print_testpoints(y_high, '')
             if run == psc_config.num_runs - 1:
-                fprint_testpoints(report, y_high, '')
+                log_report(
+                    f"{y_high[0]:>14.6f}{y_high[1]:>14.6f}{y_high[2]:>14.6f}"
+                    f"{y_high[3]:>14.6f}{y_high[4]:>14.6f}{y_high[5]:>14.6f}"
+                )
 
             # Final measured gains/offsets
             [mdac, m1, m2, m3, bdac, b1, b2, b3] = compute_m_b(y_low, y_high)
 
             print("")
             print("")
+            print(HDR_6COL)
             print(f"{'dacSP':>38}{'dcct1':>14}{'dcct2':>14}{'dacRB':>14}")
             print(f"{'Final measured offsets: '}{bdac:>14.6f}{b1:>14.6f}"
                 f"{b2:>14.6f}{b3:>14.6f}")
             print(f"{'Final measured gains:   '}{mdac:>14.6f}{m1:>14.6f}"
                 f"{m2:>14.6f}{m3:>14.6f}")
-            # print initial measured gain errors in percent (gtarget-m1)/
-            # gtarget*100, (gtarget-m2)/gtarget*100 ...
             print("\n\n")
 
             if run == psc_config.num_runs - 1:
-                report.write_line("\n")
-                report.write_line("\n")
+                report.write_line("")
+                report.write_line("")
                 report.write_line(f"{'dacSP':>38}{'dcct1':>14}{'dcct2':>14}"
-                                f"{'dacRB':>14}\n")
+                                f"{'dacRB':>14}")
                 report.write_line(f"{'Final measured offsets: '}{bdac:>14.6f}"
-                                f"{b1:>14.6f}{b2:>14.6f}{b3:>14.6f}\n")
+                                f"{b1:>14.6f}{b2:>14.6f}{b3:>14.6f}")
                 report.write_line(f"{'Final measured gains:   '}{mdac:>14.6f}"
-                                f"{m1:>14.6f}{m2:>14.6f}{m3:>14.6f}\n")
+                                f"{m1:>14.6f}{m2:>14.6f}{m3:>14.6f}")
+                report.write_line("")
                 # fp.write initial measured gain errors in percent (gtarget-m1)
                 # /gtarget*100, (gtarget-m2)/gtarget*100 ...
-                report.write_line("\n\n")
+                report.write_line("")
 
             M[run, :] = [mdac, m1, m2, m3, bdac, b1, b2, b3]
 
@@ -518,39 +534,37 @@ def main():
         # *100, (gtarget-m2)/gtarget*100 ...
         print("")
 
-        report.write_line("\n")
+        report.write_line("")
         report.write_line(f"{'dacSP':>38}{'dcct1':>14}{'dcct2':>14}"
-                        f"{'dacRB':>14}\n")
+                        f"{'dacRB':>14}")
         report.write_line(f"{'Final measured offsets mean: '}{Mavg[4]:>9.6f}"
                         f"{Mavg[5]:>14.6f}{Mavg[6]:>14.6f}"
-                        f"{Mavg[7]:>14.6f}\n")
+                        f"{Mavg[7]:>14.6f}")
         report.write_line(f"{'Final measured offsets stdev:'}{Mstd[4]:>9.6f}"
                         f"{Mstd[5]:>14.6f}{Mstd[6]:>14.6f}"
-                        f"{Mstd[7]:>14.6f}\n")
+                        f"{Mstd[7]:>14.6f}")
         report.write_line(f"{'Final measured gains mean:   '}{Mavg[0]:>9.6f}"
                         f"{Mavg[1]:>14.6f}{Mavg[2]:>14.6f}"
-                        f"{Mavg[3]:>14.6f}\n")
+                        f"{Mavg[3]:>14.6f}")
         report.write_line(f"{'Final measured gains stdev:  '}{Mstd[0]:>9.6f}"
                         f"{Mstd[1]:>14.6f}{Mstd[2]:>14.6f}"
-                        f"{Mstd[3]:>14.6f}\n")
-        report.write_line("\n")
+                        f"{Mstd[3]:>14.6f}")
+        report.write_line("")
+        report.write_line("")
 
         print(f"Saving channel {chan} calibration data to qspi\n")
         report.write_line(f"Saving channel {chan} calibration "
-                        "constants to qspi\n")
+                        "constants to qspi")
         dut.psc.write_qspi(chan)
 
-    if chan > 0:
-        report.write_line("\n\n\n\n\n")
-    if chan == dut.num_channels:
-        report.write_line("Test data reviewed by ________________________"
-                        "______   Date_____________")
-    report.write_line("\n\n")
-    report.write_line(f"\nPage {chan} of {dut.num_channels}")
-    if chan < dut.num_channels:
-        report.write_line("\f")  # form feed aka page break
+        report.draw_footer(current_page=chan, total_pages=dut.num_channels)
+        if chan < dut.num_channels:
+             report.next_page()
+        
 
-    print("Calibration complete.")
+    report.save()
+
+    print("Calibration complete!")
 
 
 if __name__ == "__main__":

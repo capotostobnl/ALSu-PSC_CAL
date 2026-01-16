@@ -2,5 +2,6 @@
 *.doc*
 *.txt*
 *.h5*
+*shipment*
 tom_scripts/
 __pycache__

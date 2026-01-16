@@ -86,7 +86,7 @@ class PSC:
         if ch is not None:
             # e.g. "lab{5}" + "Chan1" + ":" + "DAC-I"
             return f"{self.prefix}{self.ch_fmt.format(ch)}:{suffix}"
-        return f"{self.prefix}:{suffix}"
+        return f"{self.prefix}{suffix}"
 
     def flush_io(self) -> None:
         """
@@ -181,7 +181,7 @@ class PSC:
         """
         Write setpoints to QSPI
         """
-        self.safe_put(":WriteQspi-SP", 1, ch=chan)
+        self.safe_put("WriteQspi-SP", 1, ch=chan)
 
     # =========================================================================
     # Setters (Scale Factors)
