@@ -56,6 +56,9 @@ print("3. 4CH-MSF-AR-Fast XY Corr")
 print("4. 4CH-MSS-AR Slow XY Corr")
 print("5. 4CH-MSS-AR-SD-SF")
 print("6. 4CH-MSS-AR-SK")
+print("7. PSC-4CH-MSS-AR-QFA-Shunt")
+print("8. 4CH-MSS-BTA-Q12-Q8-Q7-Q11")
+print("9. 4CH-MSS-BTA-Q16-Q15-Q9")
 print("")
 model = input("Select PSC Model: ")
 SN='0'
@@ -166,6 +169,35 @@ if model == '7':
 	OVC1_Flt_Threshold = [6, 6, 6, 6]
 	OVC2_Flt_Threshold = [6, 6, 6, 6]
 	OVV_Flt_Threshold = [12, 12, 12, 12]
+
+
+#8. 4CH-MSS-BTA-Q12-Q8-Q7-Q11
+if model == '8':
+#print("Calibrating PSC model 4CH-MSS-BTA-Q12-Q8-Q7-Q11")
+	designation = "4CH-MSS-BTA-Q12-Q8-Q7-Q11_"
+	Ndcct = 2000.0
+	chan = ['1', '2', '3', '4']
+	Rb = [8.0, 8.0, 6.0, 6.79]
+	SF_Vout = [-2, -2, -3, -3]
+	SF_Spare = [-22.5, -22.5, -30, -26.5]
+	OVC1_Flt_Threshold = [225, 225, 300, 265]
+	OVC2_Flt_Threshold = [225, 225, 300, 265]
+	OVV_Flt_Threshold = [20, 20, 30, 30]
+
+#9. 4CH-MSS-BTA-Q16-Q15-Q9
+if model == '9':
+	#print("Calibrating PSC model 4CH-MSS-BTA-Q16-Q15-Q9")
+	designation = "4CH-MSS-BTA-Q16-Q15-Q9_"
+	Ndcct = 1000.0
+	chan = ['1', '2', '3']
+	Rb = [4.74, 4.74, 4.74]
+	SF_Vout = [-2, -2, -2]
+	SF_Spare = [-19.0, -19.0, -19.0]
+	OVC1_Flt_Threshold = [190, 190, 190]
+	OVC2_Flt_Threshold = [190, 190, 190]
+	OVV_Flt_Threshold = [20, 20, 20]
+
+
 
 
 string1 = "Calibrating PSC model " + designation + "SN" + SN
