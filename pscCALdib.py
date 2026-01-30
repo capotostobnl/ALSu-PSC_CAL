@@ -59,6 +59,12 @@ print("6. 4CH-MSS-AR-SK")
 print("7. PSC-4CH-MSS-AR-QFA-Shunt")
 print("8. 4CH-MSS-BTA-Q12-Q8-Q7-Q11")
 print("9. 4CH-MSS-BTA-Q16-Q15-Q9")
+print("10. 4CH-MSS-BTA-Q14-Q10-Q6")
+print("11. 4CH-HSS-BTA-DA_B4_B7-8")
+print("12. 4CH-MSS-BTA-Q113_Q2_BT6_BT8")
+print("13. 4CH-MSS-BTA-Q15XY_Q14XY")
+print("14. 4CH-MSS-BTA-Q10XY_Q7XY")
+print("15. 4CH-HSS-BTA-B8_B5-6")
 print("")
 model = input("Select PSC Model: ")
 SN='0'
@@ -198,6 +204,89 @@ if model == '9':
 	OVV_Flt_Threshold = [20, 20, 20]
 
 
+#10. 4CH-MSS-BTA-Q14-Q10-Q6
+if model == '10':
+	#print("Calibrating PSC model 4CH-MSS-BTA-Q14-Q10-Q6")
+	designation = "4CH-MSS-BTA-Q14-Q10-Q6_"
+	Ndcct = 2000.0
+	chan = ['1', '2', '3']
+	Rb = [7.2, 8.0, 6.0]
+	SF_Vout = [-2, -2, -3]
+	SF_Spare = [-25.0, -25.0, -30.0]
+	OVC1_Flt_Threshold = [250, 250, 300]
+	OVC2_Flt_Threshold = [250, 250, 300]
+	OVV_Flt_Threshold = [20, 20, 30]
+
+
+#11. 4CH-HSS-BTA-DA_B4_B7-8
+if model == '11':
+	#print("Calibrating PSC model 4CH-HSS-BTA-DA_B4_B7-8")
+	designation = "4CH-HSS-BTA-DA_B4_B7-8_"
+	Ndcct = 2000.0
+	chan = ['2', '3']
+	Rb = [5.8, 5.3]
+	SF_Vout = [-3, -8]
+	SF_Spare = [-30, -32.5]
+	OVC1_Flt_Threshold = [325, 325]
+	OVC2_Flt_Threshold = [325, 325]
+	OVV_Flt_Threshold = [30, 80]
+
+
+#12. 4CH-MSS-BTA-Q13-Q2-BT6-BT8
+if model == '12':
+#print("Calibrating PSC model 4CH-MSS-BTA-Q13-Q2-BT6-BT8")
+	designation = "4CH-MSS-BTA-Q13-Q2-BT6-BT8_"
+	Ndcct = 1000.0
+	chan = ['1', '2', '3', '4']
+	Rb = [18.0, 10.0, 33.333333, 33.333333]
+	SF_Vout = [-1.25, 1.9, 1.9, 1.9]
+	SF_Spare = [-5, -5, -5, -5]
+	OVC1_Flt_Threshold = [50, 90, 24, 24]
+	OVC2_Flt_Threshold = [50, 90, 24, 24]
+	OVV_Flt_Threshold = [12.5, 18, 18, 18]
+	
+	
+#13. 4CH-MSS-BTA-Q15XY_Q14XY
+if model == '13':
+#print("Calibrating PSC model 4CH-MSS-BTA-Q15XY_Q14XY")
+	designation = "4CH-MSS-BTA-Q15XY_Q14XY_"
+	Ndcct = 1000.0
+	chan = ['1', '2', '3', '4']
+	Rb = [33.333333, 33.333333, 33.333333, 33.333333]
+	SF_Vout = [1.9, 1.9, 1.9, 1.9]
+	SF_Spare = [-5, -5, -5, -5]
+	OVC1_Flt_Threshold = [24, 24, 24, 24]
+	OVC2_Flt_Threshold = [24, 24, 24, 24]
+	OVV_Flt_Threshold = [18, 18, 18, 18]
+
+
+#14. 4CH-MSS-BTA-Q10XY_Q7XY
+if model == '14':
+#print("Calibrating PSC model 4CH-MSS-BTA-Q10XY_Q7XY")
+	designation = "4CH-MSS-BTA-Q10XY_Q7XY_"
+	Ndcct = 1000.0
+	chan = ['1', '2', '3', '4']
+	Rb = [33.333333, 33.333333, 33.333333, 33.333333]
+	SF_Vout = [1.9, 1.9, 1.9, 1.9]
+	SF_Spare = [-5, -5, -5, -5]
+	OVC1_Flt_Threshold = [24, 24, 24, 24]
+	OVC2_Flt_Threshold = [24, 24, 24, 24]
+	OVV_Flt_Threshold = [18, 18, 18, 18]
+
+
+#15. 4CH-HSS-BTA_B8_B5-6
+if model == '15':
+#print("Calibrating PSC model 4CH-HSS-BTA-B8_B5-6")
+	designation = "4CH-HSS-BTA-B8_B5-6_"
+	Ndcct = 2000.0
+	chan = ['2', '3']
+	Rb = [4.6, 5.6]
+	SF_Vout = [-2.5, -8.0]
+	SF_Spare = [-39, -32.5]
+	OVC1_Flt_Threshold = [390, 325]
+	OVC2_Flt_Threshold = [390, 325]
+	OVV_Flt_Threshold = [25, 85]
+
 
 
 string1 = "Calibrating PSC model " + designation + "SN" + SN
@@ -261,7 +350,7 @@ def set_keithley2401(Ival):
 	x = ser2.write(("SOUR:CURR:AMPL "+str(Ival)+CR).encode('UTF-8'))
 
 def set_atsdac_cal_source(Ival):
-	y = str(Ival*50)
+	y = str(Ival*50) # 50V/A
 	sock.sendto(b'CALDAC' + y.encode('UTF-8') + b'\n', server_address)
 
 
@@ -272,6 +361,13 @@ def measure_testpoints(I, sp, j, verbose, verification):
     for i in range(4):
         set_atsdac_cal_source(I)
         time.sleep(0.5)
+    adc1 = caget(psc+chan[j]+':DCCT1-I')
+    #print(adc1)
+    #print(I*Ndcct)
+    time.sleep(1)
+    if (abs(adc1)-abs(I*Ndcct)) > 0.3*abs(I*Ndcct):
+        print("Error setting calibration DAC setpoint. Try again.")
+        sys.exit()
     #time.sleep(5)
     if verbose:
         print("Adjusting DAC for null error")
@@ -310,8 +406,8 @@ def measure_testpoints(I, sp, j, verbose, verification):
             adc3 = caget(psc+chan[j]+':DAC-I')
             dmm = float(get_3458A().decode('utf-8')) - dmm_offs # reference current i0
             i+=1
-            if abs(adc1+sp) < 0.08*abs(sp) and abs(adc2+sp) < 0.08*abs(sp) and \
-               abs(adc3-sp) < 0.08*abs(sp) and abs(dmm*gtarget*G+sp) < 0.08*abs(sp):
+            if abs(adc1+sp) < 0.02*Ifs*Ndcct and abs(adc2+sp) < 0.02*Ifs*Ndcct and \
+               abs(adc3-sp) < 0.02*Ifs*Ndcct and abs(dmm*gtarget*G+sp) < 0.02*Ifs*Ndcct:
                 x=1 # if all readings good, break loop
             time.sleep(1)    
         if i == 4:
@@ -319,8 +415,9 @@ def measure_testpoints(I, sp, j, verbose, verification):
             print("adc2 = %3.5f" % adc2)
             print("adc3 = %3.5f" % adc3)
             print("sp = %3.5f" % sp)
-            print("dmm = %3.5f" % dmm)
-            print("Calibration failed. Bad measurements. Try again.")
+            dmm_scaled = dmm*gtarget*G
+            print("dmm = %3.5f" % dmm_scaled)
+            print("Calibration failed. Bad initial measurement(s). Try again.")
             sys.exit()
     
     if verification==1:
@@ -330,8 +427,8 @@ def measure_testpoints(I, sp, j, verbose, verification):
             adc3 = caget(psc+chan[j]+':DAC-I')
             dmm = float(get_3458A().decode('utf-8')) - dmm_offs # reference current i0
             i+=1
-            if abs(adc1+sp) < 0.01*abs(sp) and abs(adc2+sp) < 0.01*abs(sp) and \
-               abs(adc3-sp) < 0.01*abs(sp) and abs(dmm*gtarget*G+sp) < 0.002*abs(sp):
+            if abs(adc1+sp) < 0.0002*Ifs*Ndcct and abs(adc2+sp) < 0.0002*Ifs*Ndcct and \
+               abs(adc3-sp) < 0.0002*Ifs*Ndcct and abs(dmm*gtarget*G+sp) < 0.0002*Ifs*Ndcct:
                 x=1 # if all readings good, break loop
             time.sleep(1)    
         if i == 4:
@@ -339,7 +436,7 @@ def measure_testpoints(I, sp, j, verbose, verification):
             print("adc2 = %3.5f" % adc2)
             print("adc3 = %3.5f" % adc3)
             print("sp = %3.5f" % sp)
-            print("Calibration failed. Bad measurements. Try again.")
+            print("Calibration failed. Bad verification measurement(s). Try again.")
             sys.exit()
     
     
@@ -393,10 +490,11 @@ fp.write("End Header\n\n\n")
 for j in range(len(chan)): # loop through channels
 	
 	#turn all channels off
-	caput('lab{1}Chan1:DigOut_ON1-SP', 0)
-	caput('lab{1}Chan2:DigOut_ON1-SP', 0)
-	caput('lab{1}Chan3:DigOut_ON1-SP', 0)
-	caput('lab{1}Chan4:DigOut_ON1-SP', 0)
+	caput(psc+'1:DigOut_ON1-SP', 0)
+	caput(psc+'2:DigOut_ON1-SP', 0)
+	caput(psc+'3:DigOut_ON1-SP', 0)
+	caput(psc+'4:DigOut_ON1-SP', 0)
+	print("Turning all cahannels off...")
 	
 	#put all ATE channels in test mode
 	for x in ['1', '2', '3', '4']:

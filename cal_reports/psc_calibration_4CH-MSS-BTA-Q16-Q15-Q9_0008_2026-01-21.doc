@@ -1,0 +1,165 @@
+Report of Calibration
+PSC 4CH-MSS-BTA-Q16-Q15-Q9_S/N 0008
+2026-01-21 14:54:13
+
+Calibration Current standard: BNL PSC ATE S/N 001
+Calibration Volt standard: HP 3458A-002 S/N 2823A 23647
+Calibration Resistance standard: Fluke 742A-1 S/N 1063008
+End Header
+
+
+lab{2}Chan1
+Burden resistor = 4.7400
+
+Measuring initial gains and offsets
+       Itest       dacSP       dcct1       dcct2       dacRB         err
+   -0.997850    1.034508   -1.112083   -1.108545    1.012009   -0.007348
+ -190.067777  189.987093 -188.683212 -188.787094  190.557159    0.080219
+
+                                   dacSP         dcct1         dcct2         dacRB
+Initial measured offsets:      -0.037277     -0.122143     -0.118039      0.000000
+Initial measured gains:         0.999379      0.992073      0.992641      1.003136
+Gain corrections:               0.999379      1.007991      1.007414      1.000000
+
+Writing gain and offset corrections for dacSP, dcct1, and dcct2 to PSC
+
+Measuring DAC readback gain and offset
+DAC SP   DAC RB
+1.000000   1.015171 
+190.000000   190.489273 
+
+Measured offset: 0.012662
+Measured gain: 1.002508
+Gain correction: 0.997498
+
+Writing gain and offset constants for dacRB to PSC
+
+Verification
+       Itest       dacSP       dcct1       dcct2       dacRB         err
+   -0.998162    0.997381   -0.999836   -0.999191    1.005301   -0.011131
+ -190.067176  190.065545 -190.066925 -190.065964  190.073135    0.091176
+
+
+                                 dacSP         dcct1         dcct2         dacRB
+Final measured offsets:       0.000777     -0.001684     -0.001040      0.007922
+Final measured gains:         0.999996      0.999990      0.999988      0.999998
+
+
+
+                                 dacSP         dcct1         dcct2         dacRB
+Final measured offsets mean:  0.000569     -0.000973     -0.001194      0.007529
+Final measured offsets stdev: 0.000235      0.000730      0.000170      0.000393
+Final measured gains mean:    0.999992      0.999989      0.999987      0.999997
+Final measured gains stdev:   0.000007      0.000004      0.000005      0.000008
+
+Saving channel 1 calibration constants to qspi
+
+
+
+Page 1 of 3lab{2}Chan2
+Burden resistor = 4.7400
+
+Measuring initial gains and offsets
+       Itest       dacSP       dcct1       dcct2       dacRB         err
+   -0.997905    1.022240   -1.110425   -1.103370    0.988338    0.011450
+ -190.065246  190.085836 -188.790512 -188.702271  190.553925    0.075497
+
+                                   dacSP         dcct1         dcct2         dacRB
+Initial measured offsets:      -0.024355     -0.119842     -0.113215      0.000000
+Initial measured gains:         0.999980      0.992663      0.992233      1.002655
+Gain corrections:               0.999980      1.007392      1.007828      1.000000
+
+Writing gain and offset corrections for dacSP, dcct1, and dcct2 to PSC
+
+Measuring DAC readback gain and offset
+DAC SP   DAC RB
+1.000000   0.990189 
+190.000000   190.489853 
+
+Measured offset: -0.012455
+Measured gain: 1.002644
+Gain correction: 0.997363
+
+Writing gain and offset constants for dacRB to PSC
+
+Verification
+       Itest       dacSP       dcct1       dcct2       dacRB         err
+   -0.998432    0.998191   -0.999904   -0.999345    0.994468    0.005901
+ -190.065455  190.062585 -190.065262 -190.063843  190.057755    0.077471
+
+
+                                 dacSP         dcct1         dcct2         dacRB
+Final measured offsets:       0.000227     -0.001481     -0.000927     -0.003717
+Final measured gains:         0.999986      0.999991      0.999987      0.999994
+
+
+
+                                 dacSP         dcct1         dcct2         dacRB
+Final measured offsets mean:  0.000665     -0.001798     -0.000985     -0.000679
+Final measured offsets stdev: 0.000622      0.000240      0.000077      0.002635
+Final measured gains mean:    0.999986      0.999986      0.999986      0.999994
+Final measured gains stdev:   0.000002      0.000004      0.000003      0.000007
+
+Saving channel 2 calibration constants to qspi
+
+
+
+
+
+
+
+
+Page 2 of 3lab{2}Chan3
+Burden resistor = 4.7400
+
+Measuring initial gains and offsets
+       Itest       dacSP       dcct1       dcct2       dacRB         err
+   -0.998041    1.010345   -1.103967   -1.099457    1.007846   -0.006873
+ -190.063642  189.881254 -188.584579 -188.734329  190.443253    0.067343
+
+                                   dacSP         dcct1         dcct2         dacRB
+Initial measured offsets:      -0.013331     -0.114293     -0.108968      0.000000
+Initial measured gains:         0.998970      0.991617      0.992433      1.002989
+Gain corrections:               0.998970      1.008454      1.007625      1.000000
+
+Writing gain and offset corrections for dacSP, dcct1, and dcct2 to PSC
+
+Measuring DAC readback gain and offset
+DAC SP   DAC RB
+1.000000   1.011084 
+190.000000   190.379013 
+
+Measured offset: 0.009137
+Measured gain: 1.001947
+Gain correction: 0.998057
+
+Writing gain and offset constants for dacRB to PSC
+
+Verification
+       Itest       dacSP       dcct1       dcct2       dacRB         err
+   -0.998293    0.997521   -0.999846   -0.999711    1.002063   -0.007025
+ -190.064242  190.061658 -190.061630 -190.063370  190.067276    0.072195
+
+
+                                 dacSP         dcct1         dcct2         dacRB
+Final measured offsets:       0.000763     -0.001575     -0.001430      0.004536
+Final measured gains:         0.999990      0.999978      0.999988      1.000006
+
+
+
+                                 dacSP         dcct1         dcct2         dacRB
+Final measured offsets mean:  0.000727     -0.001681     -0.001745      0.004230
+Final measured offsets stdev: 0.000101      0.000140      0.000241      0.000454
+Final measured gains mean:    0.999988      0.999983      0.999984      1.000015
+Final measured gains stdev:   0.000002      0.000003      0.000003      0.000008
+
+Saving channel 3 calibration constants to qspi
+
+
+
+
+
+Test data reviewed by ______________________________   Date_____________
+
+
+Page 3 of 3
