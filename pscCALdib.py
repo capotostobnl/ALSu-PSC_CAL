@@ -494,7 +494,7 @@ for j in range(len(chan)): # loop through channels
 	caput(psc+'2:DigOut_ON1-SP', 0)
 	caput(psc+'3:DigOut_ON1-SP', 0)
 	caput(psc+'4:DigOut_ON1-SP', 0)
-	print("Turning all cahannels off...")
+	print("Turning all channels off...")
 	
 	#put all ATE channels in test mode
 	for x in ['1', '2', '3', '4']:
@@ -510,7 +510,8 @@ for j in range(len(chan)): # loop through channels
 	print("DMM zero offset reading: %1.7f" % dmm_offs)
 	
 	#set channel j to cal mode
-	sock.sendto(b'T' + str(j+1).encode('UTF-8') + b'1' + b'\n', server_address)
+	#sock.sendto(b'T' + str(j+1).encode('UTF-8') + b'1' + b'\n', server_address)
+	sock.sendto(b'T' + chan[j].encode('UTF-8') + b'1' + b'\n', server_address)
 	time.sleep(0.5)
 		
 	#turn on cal source
@@ -775,8 +776,8 @@ for j in range(len(chan)): # loop through channels
 	fp.write(f"{'Final measured gains stdev:  '}{Mstd[0]:>9.6f}{Mstd[1]:>14.6f}{Mstd[2]:>14.6f}{Mstd[3]:>14.6f}\n") 
 	fp.write("\n")
 
-	print("Saving channel %d calibration data to qspi\n" % (j+1))
-	fp.write("Saving channel %d calibration constants to qspi\n" % (j+1))
+	print("Saving channel %s calibration data to qspi\n" % (chan[j]))
+	fp.write("Saving channel %s calibration constants to qspi\n" % (chan[j]))
 	if j>0:
 		fp.write("\n\n\n\n\n")
 	if j==(len(chan)-1):

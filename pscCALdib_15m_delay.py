@@ -7,8 +7,46 @@ import time
 import sys
 import socket
 import os
+from reportlab.lib.pagesizes import LETTER
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+
 
 ATE_IP_ADDRESS = '10.69.26.3'
+
+
+def text_report_to_pdf(txt_file, pdf_file):
+	c = canvas.Canvas(pdf_file, pagesize=LETTER)
+	width, height = LETTER
+
+	x_margin = 0.75 * inch
+	y_margin = 0.75 * inch
+	y = height - y_margin
+
+	line_height = 10
+
+	# Use a monospaced font
+	c.setFont("Courier", 9)
+
+	with open(txt_file, "r") as f:
+		for line in f:
+			# Form-feed → new page
+			if "\f" in line:
+				c.showPage()
+				c.setFont("Courier", 9)
+				y = height - y_margin
+				continue
+
+			c.drawString(x_margin, y, line.rstrip("\n"))
+			y -= line_height
+
+			# Auto page break
+			if y < y_margin:
+				c.showPage()
+				c.setFont("Courier", 9)
+				y = height - y_margin
+
+	c.save()
 
 #SN = sys.argv[1] # chassis serial number
 print("")
@@ -18,6 +56,15 @@ print("3. 4CH-MSF-AR-Fast XY Corr")
 print("4. 4CH-MSS-AR Slow XY Corr")
 print("5. 4CH-MSS-AR-SD-SF")
 print("6. 4CH-MSS-AR-SK")
+print("7. PSC-4CH-MSS-AR-QFA-Shunt")
+print("8. 4CH-MSS-BTA-Q12-Q8-Q7-Q11")
+print("9. 4CH-MSS-BTA-Q16-Q15-Q9")
+print("10. 4CH-MSS-BTA-Q14-Q10-Q6")
+print("11. 4CH-HSS-BTA-DA_B4_B7-8")
+print("12. 4CH-MSS-BTA-Q113_Q2_BT6_BT8")
+print("13. 4CH-MSS-BTA-Q15XY_Q14XY")
+print("14. 4CH-MSS-BTA-Q10XY_Q7XY")
+print("15. 4CH-HSS-BTA-B8_B5-6")
 print("")
 model = input("Select PSC Model: ")
 SN='0'
@@ -35,10 +82,19 @@ formatted_date = now.strftime("%Y-%m-%d")
 psc_num = input("Enter the PSC Number, e.g. 5 for 'lab{5}Chan'")
 psc = f"lab{{{psc_num}}}Chan"
 #model = 4
-now=datetime.now()
-print(f"Time now is {now.strftime('%H:%M:%S')}")
-print("Sleeping 15 minutes...")
-time.sleep(900)
+
+print(f"Sleeping 20 Minutes")
+total_seconds = (15*60)
+print(f"Minutes remaining: {total_seconds/60}")
+while total_seconds >= 0:
+        mins = total_seconds // 60
+        secs = total_seconds % 60
+
+        timer_display = f"{mins:02d}:{secs:02d}"
+
+        print(f"Time remaining: {timer_display}")
+        time.sleep(1)
+        total_seconds -= 1
 
 #models
 #1. 2CH-HSS-AR-ABend-QFA
@@ -120,6 +176,131 @@ if model == '6':
 	OVC2_Flt_Threshold = [24.5, 24.5, 24.5, 24.5]
 	OVV_Flt_Threshold = [18.5, 18.5, 18.5, 18.5]
 
+#7. 4CH-MSS-AR QFA Shunt
+if model == '7':
+	#print("Calibrating PSC model 4CH-MSS-AR QFA Shunt")
+	designation = "4CH-MSS-AR-QFA_Shunt_"
+	Ndcct = 1000.0
+	chan = ['1', '2', '3', '4']
+	Rb = [83.333333, 83.333333, 83.333333, 83.333333]
+	SF_Vout = [-2, -2, -2, -2]
+	SF_Spare = [-20, -20, -20, -20]
+	OVC1_Flt_Threshold = [6, 6, 6, 6]
+	OVC2_Flt_Threshold = [6, 6, 6, 6]
+	OVV_Flt_Threshold = [12, 12, 12, 12]
+
+
+#8. 4CH-MSS-BTA-Q12-Q8-Q7-Q11
+if model == '8':
+#print("Calibrating PSC model 4CH-MSS-BTA-Q12-Q8-Q7-Q11")
+	designation = "4CH-MSS-BTA-Q12-Q8-Q7-Q11_"
+	Ndcct = 2000.0
+	chan = ['1', '2', '3', '4']
+	Rb = [8.0, 8.0, 6.0, 6.79]
+	SF_Vout = [-2, -2, -3, -3]
+	SF_Spare = [-22.5, -22.5, -30, -26.5]
+	OVC1_Flt_Threshold = [225, 225, 300, 265]
+	OVC2_Flt_Threshold = [225, 225, 300, 265]
+	OVV_Flt_Threshold = [20, 20, 30, 30]
+
+#9. 4CH-MSS-BTA-Q16-Q15-Q9
+if model == '9':
+	#print("Calibrating PSC model 4CH-MSS-BTA-Q16-Q15-Q9")
+	designation = "4CH-MSS-BTA-Q16-Q15-Q9_"
+	Ndcct = 1000.0
+	chan = ['1', '2', '3']
+	Rb = [4.74, 4.74, 4.74]
+	SF_Vout = [-2, -2, -2]
+	SF_Spare = [-19.0, -19.0, -19.0]
+	OVC1_Flt_Threshold = [190, 190, 190]
+	OVC2_Flt_Threshold = [190, 190, 190]
+	OVV_Flt_Threshold = [20, 20, 20]
+
+
+#10. 4CH-MSS-BTA-Q14-Q10-Q6
+if model == '10':
+	#print("Calibrating PSC model 4CH-MSS-BTA-Q14-Q10-Q6")
+	designation = "4CH-MSS-BTA-Q14-Q10-Q6_"
+	Ndcct = 2000.0
+	chan = ['1', '2', '3']
+	Rb = [7.2, 8.0, 6.0]
+	SF_Vout = [-2, -2, -3]
+	SF_Spare = [-25.0, -25.0, -30.0]
+	OVC1_Flt_Threshold = [250, 250, 300]
+	OVC2_Flt_Threshold = [250, 250, 300]
+	OVV_Flt_Threshold = [20, 20, 30]
+
+
+#11. 4CH-HSS-BTA-DA_B4_B7-8
+if model == '11':
+	#print("Calibrating PSC model 4CH-HSS-BTA-DA_B4_B7-8")
+	designation = "4CH-HSS-BTA-DA_B4_B7-8_"
+	Ndcct = 2000.0
+	chan = ['2', '3']
+	Rb = [5.8, 5.3]
+	SF_Vout = [-3, -8]
+	SF_Spare = [-30, -32.5]
+	OVC1_Flt_Threshold = [325, 325]
+	OVC2_Flt_Threshold = [325, 325]
+	OVV_Flt_Threshold = [30, 80]
+
+
+#12. 4CH-MSS-BTA-Q13-Q2-BT6-BT8
+if model == '12':
+#print("Calibrating PSC model 4CH-MSS-BTA-Q13-Q2-BT6-BT8")
+	designation = "4CH-MSS-BTA-Q13-Q2-BT6-BT8_"
+	Ndcct = 1000.0
+	chan = ['1', '2', '3', '4']
+	Rb = [18.0, 10.0, 33.333333, 33.333333]
+	SF_Vout = [-1.25, 1.9, 1.9, 1.9]
+	SF_Spare = [-5, -5, -5, -5]
+	OVC1_Flt_Threshold = [50, 90, 24, 24]
+	OVC2_Flt_Threshold = [50, 90, 24, 24]
+	OVV_Flt_Threshold = [12.5, 18, 18, 18]
+	
+	
+#13. 4CH-MSS-BTA-Q15XY_Q14XY
+if model == '13':
+#print("Calibrating PSC model 4CH-MSS-BTA-Q15XY_Q14XY")
+	designation = "4CH-MSS-BTA-Q15XY_Q14XY_"
+	Ndcct = 1000.0
+	chan = ['1', '2', '3', '4']
+	Rb = [33.333333, 33.333333, 33.333333, 33.333333]
+	SF_Vout = [1.9, 1.9, 1.9, 1.9]
+	SF_Spare = [-5, -5, -5, -5]
+	OVC1_Flt_Threshold = [24, 24, 24, 24]
+	OVC2_Flt_Threshold = [24, 24, 24, 24]
+	OVV_Flt_Threshold = [18, 18, 18, 18]
+
+
+#14. 4CH-MSS-BTA-Q10XY_Q7XY
+if model == '14':
+#print("Calibrating PSC model 4CH-MSS-BTA-Q10XY_Q7XY")
+	designation = "4CH-MSS-BTA-Q10XY_Q7XY_"
+	Ndcct = 1000.0
+	chan = ['1', '2', '3', '4']
+	Rb = [33.333333, 33.333333, 33.333333, 33.333333]
+	SF_Vout = [1.9, 1.9, 1.9, 1.9]
+	SF_Spare = [-5, -5, -5, -5]
+	OVC1_Flt_Threshold = [24, 24, 24, 24]
+	OVC2_Flt_Threshold = [24, 24, 24, 24]
+	OVV_Flt_Threshold = [18, 18, 18, 18]
+
+
+#15. 4CH-HSS-BTA_B8_B5-6
+if model == '15':
+#print("Calibrating PSC model 4CH-HSS-BTA-B8_B5-6")
+	designation = "4CH-HSS-BTA-B8_B5-6_"
+	Ndcct = 2000.0
+	chan = ['2', '3']
+	Rb = [4.6, 5.6]
+	SF_Vout = [-2.5, -8.0]
+	SF_Spare = [-39, -32.5]
+	OVC1_Flt_Threshold = [390, 325]
+	OVC2_Flt_Threshold = [390, 325]
+	OVV_Flt_Threshold = [25, 85]
+
+
 
 string1 = "Calibrating PSC model " + designation + "SN" + SN
 print(string1)
@@ -182,14 +363,24 @@ def set_keithley2401(Ival):
 	x = ser2.write(("SOUR:CURR:AMPL "+str(Ival)+CR).encode('UTF-8'))
 
 def set_atsdac_cal_source(Ival):
-	y = str(Ival*50)
+	y = str(Ival*50) # 50V/A
 	sock.sendto(b'CALDAC' + y.encode('UTF-8') + b'\n', server_address)
 
 
-def measure_testpoints(I, sp, j, verbose):
+def measure_testpoints(I, sp, j, verbose, verification):
+    #print("%3.6f" % I)
     #i0 = -Ifs*0.1 # unipolar
     #set_keithley2401(I)
-    set_atsdac_cal_source(I)
+    for i in range(4):
+        set_atsdac_cal_source(I)
+        time.sleep(0.5)
+    adc1 = caget(psc+chan[j]+':DCCT1-I')
+    #print(adc1)
+    #print(I*Ndcct)
+    time.sleep(1)
+    if (abs(adc1)-abs(I*Ndcct)) > 0.3*abs(I*Ndcct):
+        print("Error setting calibration DAC setpoint. Try again.")
+        sys.exit()
     #time.sleep(5)
     if verbose:
         print("Adjusting DAC for null error")
@@ -215,11 +406,54 @@ def measure_testpoints(I, sp, j, verbose):
         err = caget(psc+chan[j]+':Error-I') # get err
         i+=1
         #print(i)
+    if i == 12:
+        print("Calibration failed. Could not null error. Try again.")
+        sys.exit()
 
-    adc1 = caget(psc+chan[j]+':DCCT1-I')
-    adc2 = caget(psc+chan[j]+':DCCT2-I')
-    adc3 = caget(psc+chan[j]+':DAC-I')
-    dmm = float(get_3458A().decode('utf-8')) - dmm_offs # reference current i0
+    i=0
+    x=0
+    if verification==0:
+        while(i<4 and x==0):
+            adc1 = caget(psc+chan[j]+':DCCT1-I')
+            adc2 = caget(psc+chan[j]+':DCCT2-I')
+            adc3 = caget(psc+chan[j]+':DAC-I')
+            dmm = float(get_3458A().decode('utf-8')) - dmm_offs # reference current i0
+            i+=1
+            if abs(adc1+sp) < 0.02*Ifs*Ndcct and abs(adc2+sp) < 0.02*Ifs*Ndcct and \
+               abs(adc3-sp) < 0.02*Ifs*Ndcct and abs(dmm*gtarget*G+sp) < 0.02*Ifs*Ndcct:
+                x=1 # if all readings good, break loop
+            time.sleep(1)    
+        if i == 4:
+            print("adc1 = %3.5f" % adc1)
+            print("adc2 = %3.5f" % adc2)
+            print("adc3 = %3.5f" % adc3)
+            print("sp = %3.5f" % sp)
+            dmm_scaled = dmm*gtarget*G
+            print("dmm = %3.5f" % dmm_scaled)
+            print("Calibration failed. Bad initial measurement(s). Try again.")
+            sys.exit()
+    
+    if verification==1:
+        while(i<4 and x==0):
+            adc1 = caget(psc+chan[j]+':DCCT1-I')
+            adc2 = caget(psc+chan[j]+':DCCT2-I')
+            adc3 = caget(psc+chan[j]+':DAC-I')
+            dmm = float(get_3458A().decode('utf-8')) - dmm_offs # reference current i0
+            i+=1
+            if abs(adc1+sp) < 0.0002*Ifs*Ndcct and abs(adc2+sp) < 0.0002*Ifs*Ndcct and \
+               abs(adc3-sp) < 0.0002*Ifs*Ndcct and abs(dmm*gtarget*G+sp) < 0.0002*Ifs*Ndcct:
+                x=1 # if all readings good, break loop
+            time.sleep(1)    
+        if i == 4:
+            print("adc1 = %3.5f" % adc1)
+            print("adc2 = %3.5f" % adc2)
+            print("adc3 = %3.5f" % adc3)
+            print("sp = %3.5f" % sp)
+            print("Calibration failed. Bad verification measurement(s). Try again.")
+            sys.exit()
+    
+    
+       
     
     #caput(psc+chan[j]+':SF:AmpsperSec-SP', 10)
     #time.sleep(1)  
@@ -269,10 +503,11 @@ fp.write("End Header\n\n\n")
 for j in range(len(chan)): # loop through channels
 	
 	#turn all channels off
-	caput('lab{1}Chan1:DigOut_ON1-SP', 0)
-	caput('lab{1}Chan2:DigOut_ON1-SP', 0)
-	caput('lab{1}Chan3:DigOut_ON1-SP', 0)
-	caput('lab{1}Chan4:DigOut_ON1-SP', 0)
+	caput(psc+'1:DigOut_ON1-SP', 0)
+	caput(psc+'2:DigOut_ON1-SP', 0)
+	caput(psc+'3:DigOut_ON1-SP', 0)
+	caput(psc+'4:DigOut_ON1-SP', 0)
+	print("Turning all cahannels off...")
 	
 	#put all ATE channels in test mode
 	for x in ['1', '2', '3', '4']:
@@ -389,14 +624,14 @@ for j in range(len(chan)): # loop through channels
 			fp.write("Burden resistor = %3.4f\n\n" % Rb[j])
 			fp.write("Measuring initial gains and offsets\n")
 		#print("Measuring i0")
-		y0 = measure_testpoints(I0, sp0, j, 0) # [dmm dac adc1 adc2 adc3 err]
+		y0 = measure_testpoints(I0, sp0, j, 0, 0) # [dmm dac adc1 adc2 adc3 err]
 		print_testpoints(y0,'v')
 		if k==N-1:
 			fprint_testpoints(y0,'v')
 		
 		#print("")
 		#print("Measuring i1")       
-		y1 = measure_testpoints(I1, sp1, j, 0) # [dmm dac adc1 adc2 adc3 err]
+		y1 = measure_testpoints(I1, sp1, j, 0, 0) # [dmm dac adc1 adc2 adc3 err]
 		#print("   I      dacSP      dcct1      dcct2      dacRB      err")
 		print_testpoints(y1,'')
 		if k==N-1:
@@ -493,12 +728,12 @@ for j in range(len(chan)): # loop through channels
 		print("Verification")
 		if k==N-1:
 			fp.write("Verification\n")
-		y0 = measure_testpoints(I0, sp0, j, 0) # [dmm dac adc1 adc2 adc3 err]
+		y0 = measure_testpoints(I0, sp0, j, 0, 1) # [dmm dac adc1 adc2 adc3 err]
 		print_testpoints(y0,'v')
 		if k==N-1:
 			fprint_testpoints(y0,'v')
 			  
-		y1 = measure_testpoints(I1, sp1, j, 0) # [dmm dac adc1 adc2 adc3 err]
+		y1 = measure_testpoints(I1, sp1, j, 0, 1) # [dmm dac adc1 adc2 adc3 err]
 		print_testpoints(y1,'')
 		if k==N-1:
 			fprint_testpoints(y1,'')
@@ -582,7 +817,11 @@ for x in ['1', '2', '3', '4']:
 	time.sleep(0.5)
 
 
-file_str1 = "/home/pstester/PSC_Test_And_Cal/cal/cal_reports/psc_calibration_" + designation + SN + "_" + formatted_date + ".doc"
-os.system(f'cp "{file_str}" "{file_str1}"')
+file_str1 = "/home/pstester/PSC_Test_And_Cal/cal/cal_reports/psc_calibration_" + designation + SN + "_" + formatted_date
+os.system(f'cp "{file_str}" "{file_str1}.doc"')
 
+text_report_to_pdf(
+	"psc_calibration_temp.doc",
+	f"{file_str1}.pdf"
+)
 
