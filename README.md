@@ -43,10 +43,10 @@ pip install numpy pyepics pyserial reportlab
 
 ## Usage
 
-1. Power on the ATE, PSC, and HP 3458A DMM. Ensure network and serial connections are physically established.
+1. Power on the ATE, PSC, and HP 3458A DMM. Ensure network and serial connections are physically established. Ensure the DMM is self-calibrated at least once daily. Ensure PSC has 'warmed up' - at least 15-20 minutes. 
 2. Run the script:
    ```bash
-   python psc_calibration.py
+   python3 pscCALdib.py
    ```
 3. Follow the interactive console prompts:
    * Select the PSC Model (1-15).
@@ -117,28 +117,28 @@ flowchart TD
     RunLoop -->|Next Run| ResetGains[Reset PSC Gains = 1.0<br>Reset PSC Offsets = 0.0]
     ResetGains --> MeasLow[Measure Low Point I0]
     
-    subgraph Measurement Block [Error Nulling & Measurement]
+    subgraph MeasurementBlock [Error Nulling & Measurement]
         direction TB
         SetCurrent[Set ATE Cal Source Current] --> NullLoop{Is PSC Error<br>Nulled?}
         NullLoop -->|No| AdjustDAC[Adjust DAC Setpoint] --> NullLoop
         NullLoop -->|Yes| ReadVals[Read DMM, DCCT1, DCCT2, DAC RB]
     end
     
-    MeasLow -.-> Measurement Block
-    Measurement Block -.-> MeasHigh[Measure High Point I1]
-    MeasHigh -.-> Measurement Block
-    Measurement Block -.-> CalcInit[Calculate Initial m and b]
+    MeasLow -.-> MeasurementBlock
+    MeasurementBlock -.-> MeasHigh[Measure High Point I1]
+    MeasHigh -.-> MeasurementBlock
+    MeasurementBlock -.-> CalcInit[Calculate Initial m and b]
     
     CalcInit --> WriteCore[Write Corrections to PSC:<br>DCCT1, DCCT2, DAC SP]
     WriteCore --> DACRBCal[Command sp0 & sp1<br>Calculate DAC Readback m and b]
     DACRBCal --> WriteDACRB[Write Corrections to PSC:<br>DAC RB]
     
     WriteDACRB --> VerifyLow[Verification Low Point I0]
-    VerifyLow -.-> Measurement Block
-    Measurement Block -.-> VerifyHigh[Verification High Point I1]
-    VerifyHigh -.-> Measurement Block
+    VerifyLow -.-> MeasurementBlock
+    MeasurementBlock -.-> VerifyHigh[Verification High Point I1]
+    VerifyHigh -.-> MeasurementBlock
     
-    Measurement Block -.-> CheckTol{Within Tight<br>Tolerance?}
+    MeasurementBlock -.-> CheckTol{Within Tight<br>Tolerance?}
     CheckTol -->|No| Fail[Abort Script / Exit]
     CheckTol -->|Yes| LogRun[Log Final Gains/Offsets for Run]
     
