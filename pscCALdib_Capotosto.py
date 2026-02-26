@@ -83,6 +83,32 @@ psc_num = input("Enter the PSC Number, e.g. 5 for 'lab{5}Chan'")
 psc = f"lab{{{psc_num}}}Chan"
 #model = 4
 
+
+sleep_option = False
+sleep_option = input("Sleep 20 minutes?")
+if sleep_option == "1":
+	sleep_option = True
+elif sleep_option == "0":
+	sleep_option = False
+else: 
+	print("Enter 1 to sleep, or 0 to continue immediately")
+
+if sleep_option:
+	print(f"Sleeping 20 Minutes")
+	total_seconds = (20*60)
+	#total_seconds = ((15+20)*60)
+	print(f"Minutes remaining: {total_seconds/60}")
+	while total_seconds >= 0:
+			mins = total_seconds // 60
+			secs = total_seconds % 60
+			
+			timer_display = f"{mins:02d}:{secs:02d}"
+			
+			print(f"Time remaining: {timer_display}")
+			
+			time.sleep(1)
+			total_seconds -= 1
+
 #models
 #1. 2CH-HSS-AR-ABend-QFA
 if model == '1':
@@ -126,9 +152,9 @@ if model == '3':
 #4. 4CH-MSS-AR Slow XY Corr
 if model == '4':
 	#print("Calibrating PSC model 4CH-MSS-AR Slow XY Corr")
-	designation = "SPECIAL_2CH_HSS-0001_4CH-MSS-AR Slow XY Corr_"
+	designation = "4CH-MSS-AR Slow XY Corr_"
 	Ndcct = 1000.0
-	chan = ['1', '2'] #, '3', '4']
+	chan = ['1', '2', '3', '4']
 	Rb = [33.333333, 33.333333, 33.333333, 33.333333]
 	SF_Vout = [1.9, 1.9, 1.9, 1.9]
 	SF_Spare = [-5, -5, -5, -5]
@@ -494,7 +520,7 @@ for j in range(len(chan)): # loop through channels
 	caput(psc+'2:DigOut_ON1-SP', 0)
 	caput(psc+'3:DigOut_ON1-SP', 0)
 	caput(psc+'4:DigOut_ON1-SP', 0)
-	print("Turning all cahannels off...")
+	print("Turning all channels off...")
 	
 	#put all ATE channels in test mode
 	for x in ['1', '2', '3', '4']:
@@ -510,7 +536,8 @@ for j in range(len(chan)): # loop through channels
 	print("DMM zero offset reading: %1.7f" % dmm_offs)
 	
 	#set channel j to cal mode
-	sock.sendto(b'T' + str(j+1).encode('UTF-8') + b'1' + b'\n', server_address)
+	#sock.sendto(b'T' + str(j+1).encode('UTF-8') + b'1' + b'\n', server_address)
+	sock.sendto(b'T' + chan[j].encode('UTF-8') + b'1' + b'\n', server_address)
 	time.sleep(0.5)
 		
 	#turn on cal source
@@ -775,8 +802,8 @@ for j in range(len(chan)): # loop through channels
 	fp.write(f"{'Final measured gains stdev:  '}{Mstd[0]:>9.6f}{Mstd[1]:>14.6f}{Mstd[2]:>14.6f}{Mstd[3]:>14.6f}\n") 
 	fp.write("\n")
 
-	print("Saving channel %d calibration data to qspi\n" % (j+1))
-	fp.write("Saving channel %d calibration constants to qspi\n" % (j+1))
+	print("Saving channel %s calibration data to qspi\n" % (chan[j]))
+	fp.write("Saving channel %s calibration constants to qspi\n" % (chan[j]))
 	if j>0:
 		fp.write("\n\n\n\n\n")
 	if j==(len(chan)-1):

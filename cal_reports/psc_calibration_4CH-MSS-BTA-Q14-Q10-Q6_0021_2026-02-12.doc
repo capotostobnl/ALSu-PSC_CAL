@@ -1,4 +1,4 @@
-Report of Calibration
+﻿Report of Calibration
 PSC 4CH-MSS-BTA-Q14-Q10-Q6_S/N 0021
 2026-02-12 14:33:05
 
@@ -56,7 +56,8 @@ Saving channel 1 calibration constants to qspi
 
 
 
-Page 1 of 3lab{2}Chan2
+Page 1 of 3
+lab{2}Chan2
 Burden resistor = 8.0000
 
 Measuring initial gains and offsets
@@ -109,7 +110,8 @@ Saving channel 2 calibration constants to qspi
 
 
 
-Page 2 of 3lab{2}Chan3
+Page 2 of 3
+lab{2}Chan3
 Burden resistor = 6.0000
 
 Measuring initial gains and offsets
@@ -162,4 +164,4 @@ Saving channel 3 calibration constants to qspi
 Test data reviewed by ______________________________   Date_____________
 
 
-Page 3 of 3
+Page 3 of 3
